@@ -7,6 +7,9 @@ Arquivo com lista de comandos utilizados no desenvolvimento
 - Execução de Migration
 > yarn sequelize db:migrate migration-name
 
+- Revertendo a última Migration executada
+> yarn sequelize db:migrate:undo
+
 - Criação de Seed
 > yarn sequelize seed:generate --name seed-name
 
