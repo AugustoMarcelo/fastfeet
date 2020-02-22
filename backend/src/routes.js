@@ -6,6 +6,8 @@ import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import DeliveryController from './app/controllers/DeliveryController';
+import PendingDeliveryController from './app/controllers/PendingDeliveryController';
+import CompletedDeliveryController from './app/controllers/CompletedDeliveryController';
 import FileController from './app/controllers/FileController';
 
 import authMiddleware from './app/middlewares/auth';
@@ -14,6 +16,10 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
+
+// Rotas para os entregadores: acesso via ID
+routes.get('/deliveryman/:id/pending', PendingDeliveryController.index);
+routes.get('/deliveryman/:id/deliveries', CompletedDeliveryController.index);
 
 routes.use(authMiddleware);
 routes.get('/recipients', RecipientController.index);
