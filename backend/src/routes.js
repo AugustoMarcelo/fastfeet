@@ -8,6 +8,8 @@ import DeliveryManController from './app/controllers/DeliveryManController';
 import DeliveryController from './app/controllers/DeliveryController';
 import PendingDeliveryController from './app/controllers/PendingDeliveryController';
 import CompletedDeliveryController from './app/controllers/CompletedDeliveryController';
+import StartDeliveryController from './app/controllers/StartDeliveryController';
+import EndDeliveryController from './app/controllers/EndDeliveryController';
 import FileController from './app/controllers/FileController';
 
 import authMiddleware from './app/middlewares/auth';
@@ -18,8 +20,14 @@ const upload = multer(multerConfig);
 routes.post('/sessions', SessionController.store);
 
 // Rotas para os entregadores: acesso via ID
+/** Visualização de entregas pendentes e não canceladas */
 routes.get('/deliveryman/:id/pending', PendingDeliveryController.index);
+/** Visualiza de entregas já realizadas */
 routes.get('/deliveryman/:id/deliveries', CompletedDeliveryController.index);
+/** Rota para indicar a retirada do produto */
+routes.put('/deliveries/:id/start', StartDeliveryController.update);
+/** Rota para finalizar a entrega do produto */
+routes.put('/deliveries/:id/end', EndDeliveryController.update);
 
 routes.use(authMiddleware);
 routes.get('/recipients', RecipientController.index);
