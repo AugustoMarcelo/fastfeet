@@ -10,6 +10,8 @@ import PendingDeliveryController from './app/controllers/PendingDeliveryControll
 import CompletedDeliveryController from './app/controllers/CompletedDeliveryController';
 import StartDeliveryController from './app/controllers/StartDeliveryController';
 import EndDeliveryController from './app/controllers/EndDeliveryController';
+import DeliveryProblemController from './app/controllers/DeliveryProblemController';
+import CancelDeliveryController from './app/controllers/CancelDeliveryController';
 import FileController from './app/controllers/FileController';
 
 import authMiddleware from './app/middlewares/auth';
@@ -28,6 +30,10 @@ routes.get('/deliveryman/:id/deliveries', CompletedDeliveryController.index);
 routes.put('/deliveries/:id/start', StartDeliveryController.update);
 /** Rota para finalizar a entrega do produto */
 routes.put('/deliveries/:id/end', EndDeliveryController.update);
+/** Rota para o entregador cadastrar problemas */
+routes.post('/delivery/:id/problems', DeliveryProblemController.store);
+/** Rota para listar todos os problemas de uma entrega */
+routes.get('/delivery/:id/problems', DeliveryProblemController.show);
 
 routes.use(authMiddleware);
 routes.get('/recipients', RecipientController.index);
@@ -43,6 +49,13 @@ routes.get('/deliveries', DeliveryController.index);
 routes.post('/deliveries', DeliveryController.store);
 routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.destroy);
+
+/** Rota que lista todas as encomendas com problemas */
+routes.get('/deliveries/problems', DeliveryProblemController.index);
+/** Rota que lista todos os problemas de uma encomenda */
+routes.get('/delivery/problems', DeliveryProblemController.show);
+/** Rota para a distribuidora cancelar uma entrega */
+routes.put('/problem/:id/cancel-delivery', CancelDeliveryController.update);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
