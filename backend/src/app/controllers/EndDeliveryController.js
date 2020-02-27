@@ -1,8 +1,18 @@
+import * as Yup from 'yup';
+
 import Delivery from '../models/Delivery';
 
 class EndDeliveryController {
   async update(request, response) {
     const { id } = request.params;
+
+    const schema = Yup.object().shape({
+      signature_id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(request.body))) {
+      return response.status(400).json({ error: 'Dados inválidos' });
+    }
 
     let delivery = await Delivery.findByPk(id);
 
