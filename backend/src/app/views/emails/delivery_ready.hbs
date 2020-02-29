@@ -1,0 +1,18 @@
+<div style="padding: 20px;">
+  <div style="text-align: center; padding: 10px; border-radius: 4px; background: #fff; color: #ee4d64">
+    <strong>Olá, {{ deliveryman.name }}! Uma encomenda foi registrada para você e está pronta para ser retirada!</strong>
+  </div>
+  <div style="text-align: center;">
+    <p>Abaixo, estão as informações para entrega:</p>
+  </div>
+  <div style="text-align: center;">
+    <p style="border-left: 4px solid #fff; background: rgba(255,255,255, 0.2); padding: 5px">Produto: <strong>{{ delivery.product }}</strong></p>
+    <p style="border-left: 4px solid #fff; background: rgba(255,255,255, 0.2); padding: 5px">Destinatário: <strong>{{ recipient.name }}</strong></p>
+    <p style="border-left: 4px solid #fff; background: rgba(255,255,255, 0.2); padding: 5px">Endereço: <strong>{{ recipient.street }}, Nº {{ recipient.number }}, {{ recipient.complement }} - {{ recipient.city }}/{{ recipient.state }}</strong></p>
+    <p style="border-left: 4px solid #fff; background: rgba(255,255,255, 0.2); padding: 5px">CEP: <strong>{{ recipient.zipcode }}</strong></p>
+  </div>
+  <br />
+  <div style="text-align: center;">
+    <p>Distribuidora FastFeet</p>
+  </div>
+</div>
