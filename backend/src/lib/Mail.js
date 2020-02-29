@@ -31,13 +31,13 @@ class Mail {
           extname: '.hbs',
         }),
         viewPath,
-        extname: '.hbs',
+        extName: '.hbs',
       })
     );
   }
 
-  sendEmail(message) {
-    return this.transporter.sendEmail({
+  sendMail(message) {
+    return this.transporter.sendMail({
       ...mailConfig.default,
       ...message,
     });
