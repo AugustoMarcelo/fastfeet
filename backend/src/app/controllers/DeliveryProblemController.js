@@ -10,6 +10,9 @@ class DeliveryProblemController {
         {
           model: Delivery,
           as: 'delivery',
+          where: {
+            canceled_at: null,
+          },
         },
       ],
     });
