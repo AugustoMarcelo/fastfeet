@@ -1,5 +1,10 @@
 import DeliveryProblem from '../models/DeliveryProblem';
 import Delivery from '../models/Delivery';
+import DeliveryMan from '../models/DeliveryMan';
+import Recipient from '../models/Recipient';
+
+import Queue from '../../lib/Queue';
+import DeliveryCancelMail from '../jobs/DeliveryCancelMail';
 
 class CancelDeliveryController {
   async update(request, response) {
@@ -25,6 +30,16 @@ class CancelDeliveryController {
 
     delivery = await delivery.update({
       canceled_at: new Date(),
+    });
+
+    const recipient = await Recipient.findByPk(delivery.recipient_id);
+    const deliveryMan = await DeliveryMan.findByPk(delivery.deliveryman_id);
+
+    await Queue.add(DeliveryCancelMail.key, {
+      deliveryman: deliveryMan,
+      recipient,
+      delivery,
+      problem: deliveryProblem,
     });
 
     return response.status(200).json(delivery);
