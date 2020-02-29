@@ -4,6 +4,9 @@ import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
 import DeliveryMan from '../models/DeliveryMan';
 
+import Queue from '../../lib/Queue';
+import DeliveryReadyMail from '../jobs/DeliveryReadyMail';
+
 class DeliveryController {
   async index(request, response) {
     const deliveries = await Delivery.findAndCountAll({
@@ -50,6 +53,12 @@ class DeliveryController {
     }
 
     const delivery = await Delivery.create(request.body);
+
+    await Queue.add(DeliveryReadyMail.key, {
+      deliveryman: deliveryMan,
+      delivery,
+      recipient,
+    });
 
     return response.status(201).json(delivery);
   }
