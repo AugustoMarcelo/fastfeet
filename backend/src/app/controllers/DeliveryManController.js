@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import fs from 'fs';
 import { promisify } from 'util';
 import path from 'path';
@@ -8,7 +9,22 @@ import File from '../models/File';
 
 class DeliveryManController {
   async index(request, response) {
+    let where = {};
+    const { page = 1, limit = 10, q } = request.query;
+    const offset = (page - 1) * limit;
+
+    if (q) {
+      where = {
+        name: {
+          [Op.like]: `%${q}%`,
+        },
+      };
+    }
+
     const deliverymen = await DeliveryMan.findAndCountAll({
+      where,
+      limit,
+      offset,
       attributes: ['id', 'name', 'email', 'avatar_id'],
       include: [
         {

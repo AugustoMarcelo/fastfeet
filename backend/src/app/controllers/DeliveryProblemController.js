@@ -5,7 +5,12 @@ import Delivery from '../models/Delivery';
 
 class DeliveryProblemController {
   async index(request, response) {
+    const { page = 1, limit = 10 } = request.query;
+    const offset = (page - 1) * limit;
+
     const deliveriesWithProblem = await DeliveryProblem.findAndCountAll({
+      limit,
+      offset,
       include: [
         {
           model: Delivery,

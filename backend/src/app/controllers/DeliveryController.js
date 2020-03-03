@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
@@ -9,7 +10,22 @@ import DeliveryReadyMail from '../jobs/DeliveryReadyMail';
 
 class DeliveryController {
   async index(request, response) {
+    let where = {};
+    const { page = 1, limit = 10, q } = request.query;
+    const offset = (page - 1) * limit;
+
+    if (q) {
+      where = {
+        product: {
+          [Op.like]: `%${q}%`,
+        },
+      };
+    }
+
     const deliveries = await Delivery.findAndCountAll({
+      where,
+      limit,
+      offset,
       include: [
         {
           model: Recipient,

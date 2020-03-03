@@ -1,10 +1,27 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Recipient from '../models/Recipient';
 
 class RecipientController {
   async index(request, response) {
-    const recipients = await Recipient.findAndCountAll();
+    let where = {};
+    const { page = 1, limit = 10, q } = request.query;
+    const offset = (page - 1) * limit;
+
+    if (q) {
+      where = {
+        product: {
+          [Op.like]: `%${q}%`,
+        },
+      };
+    }
+
+    const recipients = await Recipient.findAndCountAll({
+      where,
+      limit,
+      offset,
+    });
 
     return response.status(200).json(recipients);
   }

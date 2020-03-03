@@ -5,6 +5,8 @@ import Recipient from '../models/Recipient';
 class PendingDeliveryController {
   async index(request, response) {
     const { id } = request.params;
+    const { page = 1, limit = 10 } = request.query;
+    const offset = (page - 1) * limit;
 
     const deliveryMan = await DeliveryMan.findByPk(id);
 
@@ -13,6 +15,8 @@ class PendingDeliveryController {
     }
 
     const deliveries = await Delivery.findAndCountAll({
+      limit,
+      offset,
       where: {
         deliveryman_id: id,
         end_date: null,
