@@ -25,6 +25,10 @@ export const Logo = styled.div`
 export const Navigation = styled.ul`
   display: flex;
 
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+
   li {
     margin-right: 10px;
 
@@ -33,6 +37,14 @@ export const Navigation = styled.ul`
       color: #999;
       font-weight: bold;
       transition: color 0.2s;
+
+      &.active {
+        color: #444;
+      }
+
+      &:hover {
+        color: #444;
+      }
     }
   }
 `;
@@ -49,7 +61,7 @@ export const ContentRight = styled.div`
   }
 
   button {
-    color: #ee4d64;
+    color: #de3b3b;
     background: transparent;
     border: 0;
     transition: color 0.2s;
