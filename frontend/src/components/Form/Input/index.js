@@ -19,6 +19,7 @@ export default function Input({ name, label, ...rest }) {
     <InputGroup>
       {label && <label>{label}</label>}
       <input ref={inputRef} {...rest} defaultValue={defaultValue} />
+      {error && <span>{error}</span>}
     </InputGroup>
   );
 }
