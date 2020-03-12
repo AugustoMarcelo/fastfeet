@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   height: 100%;
@@ -15,6 +16,23 @@ export const Card = styled.div`
   border-radius: 4px;
   box-shadow: 0px 0px 10px #00000033;
   padding: 50px 30px;
+
+  form {
+    button {
+      background: #7d40e7;
+      border-radius: 4px;
+      width: 100%;
+      height: 45px;
+      color: #fff;
+      border: none;
+      font-weight: bold;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.08, '#7d40e7')};
+      }
+    }
+  }
 `;
 
 export const Logo = styled.div`

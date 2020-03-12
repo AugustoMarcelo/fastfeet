@@ -2,7 +2,6 @@ import React from 'react';
 import { Form } from '@unform/web';
 
 import Input from '../../components/Form/Input';
-import Button from '../../components/Button';
 
 import logo from '../../assets/logo.png';
 import { Container, Card, Logo } from './styles';
@@ -32,7 +31,7 @@ export default function Login() {
             label="Senha:"
             placeholder="*******"
           />
-          <Button type="submit" title="Entrar no sistema" />
+          <button type="submit">Entrar no sistema</button>
         </Form>
       </Card>
     </Container>
