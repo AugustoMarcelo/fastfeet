@@ -1,5 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { darken } from 'polished';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 export const Container = styled.div`
   height: 100%;
@@ -28,7 +37,17 @@ export const Card = styled.div`
       font-weight: bold;
       transition: background 0.2s;
 
-      &:hover {
+      &[disabled] {
+        cursor: not-allowed;
+        background: #bbb;
+        color: #888;
+
+        svg {
+          animation: ${rotate} 2s linear infinite;
+        }
+      }
+
+      &:hover:not([disabled]) {
         background: ${darken(0.08, '#7d40e7')};
       }
     }
