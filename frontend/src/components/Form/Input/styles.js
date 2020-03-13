@@ -26,4 +26,11 @@ export const InputGroup = styled.div`
       border-color: #7d40e7;
     }
   }
+
+  span {
+    color: #f94d6a;
+    align-self: flex-start;
+    margin: 8px 0 0;
+    font-weight: bold;
+  }
 `;
