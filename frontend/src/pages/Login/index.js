@@ -1,16 +1,20 @@
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FaSpinner } from 'react-icons/fa';
 
-import Input from '../../components/Form/Input';
+import { signInRequest } from '~/store/modules/auth/actions';
 
-import logo from '../../assets/logo.png';
+import Input from '~/components/Form/Input';
+
+import logo from '~/assets/logo.png';
 import { Container, Card, Logo } from './styles';
 
 export default function Login() {
   const formRef = useRef(null);
-  const loading = false;
+  const loading = useSelector(state => state.auth.loading);
+  const dispatch = useDispatch();
 
   async function handleSubmit(data) {
     try {
@@ -24,6 +28,10 @@ export default function Login() {
       await schema.validate(data, {
         abortEarly: false,
       });
+
+      const { email, password } = data;
+
+      dispatch(signInRequest(email, password));
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorMessages = {};
