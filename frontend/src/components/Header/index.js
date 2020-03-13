@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+
+import { signOut } from '~/store/modules/auth/actions';
 
 import {
   Container,
@@ -8,9 +11,11 @@ import {
   Logo,
   Navigation,
 } from './styles';
-import logo from '../../assets/logo.png';
+import logo from '~/assets/logo.png';
 
 export default function Header() {
+  const profile = useSelector(state => state.user.profile);
+  const dispatch = useDispatch();
   const location = useLocation();
   const [selectedMenus, setSelectedMenus] = useState({
     deliveries: '',
@@ -37,6 +42,10 @@ export default function Header() {
       default:
     }
   }, [location]);
+
+  function handleLogout() {
+    dispatch(signOut());
+  }
 
   return (
     <Container>
@@ -66,8 +75,10 @@ export default function Header() {
         </Navigation>
       </ContentLeft>
       <ContentRight>
-        <strong>Admin FastFeet</strong>
-        <button type="button">sair do sistema</button>
+        <strong>{profile.name}</strong>
+        <button type="button" onClick={handleLogout}>
+          sair do sistema
+        </button>
       </ContentRight>
     </Container>
   );
