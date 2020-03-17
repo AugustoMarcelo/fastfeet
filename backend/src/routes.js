@@ -53,7 +53,7 @@ routes.delete('/deliveries/:id', DeliveryController.destroy);
 /** Rota que lista todas as encomendas com problemas */
 routes.get('/deliveries/problems', DeliveryProblemController.index);
 /** Rota que lista todos os problemas de uma encomenda */
-routes.get('/delivery/problems', DeliveryProblemController.show);
+routes.get('/delivery/:id/problems', DeliveryProblemController.show);
 /** Rota para a distribuidora cancelar uma entrega */
 routes.put('/problem/:id/cancel-delivery', CancelDeliveryController.update);
 
