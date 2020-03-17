@@ -35,7 +35,7 @@ class DeliveryManController {
       ],
     });
 
-    return response.json(deliverymen);
+    return response.status(200).json(deliverymen);
   }
 
   async store(request, response) {

@@ -33,7 +33,7 @@ class PendingDeliveryController {
       ],
     });
 
-    return response.json(deliveries);
+    return response.status(200).json(deliveries);
   }
 }
 

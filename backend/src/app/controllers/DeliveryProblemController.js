@@ -22,7 +22,7 @@ class DeliveryProblemController {
       ],
     });
 
-    return response.json(deliveriesWithProblem);
+    return response.status(200).json(deliveriesWithProblem);
   }
 
   async store(request, response) {
@@ -67,7 +67,7 @@ class DeliveryProblemController {
       },
     });
 
-    return response.json(problems);
+    return response.status(200).json(problems);
   }
 }
 

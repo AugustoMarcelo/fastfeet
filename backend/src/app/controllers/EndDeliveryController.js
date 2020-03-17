@@ -30,7 +30,7 @@ class EndDeliveryController {
       end_date: new Date(),
     });
 
-    return response.json(delivery);
+    return response.status(200).json(delivery);
   }
 }
 
