@@ -6,9 +6,9 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  margin: 40px 120px;
+  padding: 30px 120px 0;
 
   @media only screen and (max-width: 600px) {
-    margin: 20px 30px;
+    padding: 20px 30px;
   }
 `;
