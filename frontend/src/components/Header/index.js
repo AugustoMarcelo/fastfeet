@@ -40,6 +40,8 @@ export default function Header() {
         setSelectedMenus({ recipients: 'active' });
         break;
       default:
+        setSelectedMenus({ problems: 'active' });
+        break;
     }
   }, [location]);
 
@@ -70,7 +72,9 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/problems">Problemas</Link>
+            <Link to="/problems" className={`${selectedMenus.problems}`}>
+              Problemas
+            </Link>
           </li>
         </Navigation>
       </ContentLeft>
