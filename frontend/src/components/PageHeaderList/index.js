@@ -15,16 +15,20 @@ export default function PageHeaderList({
     <Container>
       <Title>{pageTitle}</Title>
       <Actions>
-        <InputIcon
-          icon={MdSearch}
-          type="text"
-          placeholder={inputPlaceholder}
-          onChange={e => handleSearch(e.target.value)}
-        />
-        <button type="button" onClick={handleClick}>
-          <MdAdd size={18} color="#fff" />
-          Cadastrar
-        </button>
+        {handleSearch && (
+          <InputIcon
+            icon={MdSearch}
+            type="text"
+            placeholder={inputPlaceholder}
+            onChange={e => handleSearch(e.target.value)}
+          />
+        )}
+        {handleClick && (
+          <button type="button" onClick={handleClick}>
+            <MdAdd size={18} color="#fff" />
+            Cadastrar
+          </button>
+        )}
       </Actions>
     </Container>
   );
@@ -33,6 +37,6 @@ export default function PageHeaderList({
 PageHeaderList.propTypes = {
   pageTitle: PropTypes.string,
   inputPlaceholder: PropTypes.string,
-  handleClick: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
+  handleClick: PropTypes.func,
+  handleSearch: PropTypes.func,
 };
