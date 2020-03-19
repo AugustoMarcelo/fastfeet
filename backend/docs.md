@@ -248,13 +248,14 @@
     }
     ```
 
-# [`GET` /deliveries/problems{?page?limit}]
+# [`GET` /deliveries/problems{?page?limit?q}]
 > Retorna todas as entregas com problemas
 + Parameters
   | Parameter | Description | Parameter Type     | Default Value  |
   |-----------|-------------|--------------------|---------------|
   | page      | Número da página a ser retornada | Query (*optional*) | 1 |
   | limit     | Quantidade de itens por requisição | Query (*optional*) | 10 |
+  | q         | Nome da encomenda a ser buscada | Query (*optional*) | - |
 
 + Response `200` (application/json)
   + Body
