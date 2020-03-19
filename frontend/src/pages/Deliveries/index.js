@@ -5,7 +5,8 @@ import api from '~/services/api';
 import PageHeaderList from '~/components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
 import Pagination from '~/components/Pagination';
-import { Table, EmptyContent } from './styles';
+import { EmptyContent } from '~/components/styles/Table';
+import { Table } from './styles';
 
 export default function Deliveries() {
   const [deliveries, setDeliveries] = useState([]);
