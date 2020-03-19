@@ -21,6 +21,9 @@ export const Table = styled.table`
 
       img {
         margin-right: 5px;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
       }
     }
 
