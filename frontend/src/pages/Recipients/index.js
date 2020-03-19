@@ -17,8 +17,12 @@ export default function Recipients() {
   const [recipients, setRecipients] = useState([]);
 
   async function loadRecipients() {
-    const response = await api.get('recipients');
-    console.tron.log(response.data.rows);
+    const response = await api.get('recipients', {
+      params: {
+        ...pagination,
+        q: query,
+      },
+    });
     setRecipients(response.data.rows);
   }
 
