@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
 import DeliveryProblem from '../models/DeliveryProblem';
@@ -5,8 +6,19 @@ import Delivery from '../models/Delivery';
 
 class DeliveryProblemController {
   async index(request, response) {
-    const { page = 1, limit = 10 } = request.query;
+    let where = {
+      canceled_at: null,
+    };
+    const { page = 1, limit = 10, q } = request.query;
     const offset = (page - 1) * limit;
+
+    if (q) {
+      where = {
+        product: {
+          [Op.like]: `%${q}%`,
+        },
+      };
+    }
 
     const deliveriesWithProblem = await DeliveryProblem.findAndCountAll({
       limit,
@@ -15,9 +27,7 @@ class DeliveryProblemController {
         {
           model: Delivery,
           as: 'delivery',
-          where: {
-            canceled_at: null,
-          },
+          where,
         },
       ],
     });
