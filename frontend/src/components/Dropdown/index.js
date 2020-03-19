@@ -9,7 +9,14 @@ import PropTypes from 'prop-types';
 
 import { Container, Button, Menu } from './styles';
 
-export default function Dropdown({ onView, onDelete, onEdit }) {
+export default function Dropdown({
+  onView,
+  onDelete,
+  onEdit,
+  viewLabel,
+  deleteLabel,
+  editLabel,
+}) {
   const [visible, setVisible] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -44,19 +51,19 @@ export default function Dropdown({ onView, onDelete, onEdit }) {
           <li disabled={onView ? 0 : 1}>
             <button type="button" onClick={onView}>
               <MdVisibility color="#8E5BE8" size={15} />
-              <span>Visualizar</span>
+              <span>{viewLabel}</span>
             </button>
           </li>
           <li disabled={onEdit ? 0 : 1}>
             <button onClick={onEdit} type="button">
               <MdCreate color="#4D85EE" size={15} />
-              <span>Editar</span>
+              <span>{editLabel}</span>
             </button>
           </li>
           <li disabled={onDelete ? 0 : 1}>
             <button type="button" onClick={onDelete}>
               <MdDeleteForever color="#DE3B3B" size={15} />
-              <span>Excluir</span>
+              <span>{deleteLabel}</span>
             </button>
           </li>
         </Menu>
@@ -67,12 +74,18 @@ export default function Dropdown({ onView, onDelete, onEdit }) {
 
 Dropdown.propTypes = {
   onView: PropTypes.func,
+  viewLabel: PropTypes.string,
   onEdit: PropTypes.func,
+  editLabel: PropTypes.string,
   onDelete: PropTypes.func,
+  deleteLabel: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
   onView: null,
+  viewLabel: 'Visualizar',
   onEdit: null,
+  editLabel: 'Editar',
   onDelete: null,
+  deleteLabel: 'Excluir',
 };

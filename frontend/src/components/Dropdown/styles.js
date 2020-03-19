@@ -31,7 +31,8 @@ export const Menu = styled.ul`
   list-style: none;
   background: #fff;
   border-radius: 4px;
-  width: 120px;
+  min-width: 120px;
+  width: max-content;
   box-shadow: 0 0 5px #00000026;
 
   @media (max-width: 767px) {
