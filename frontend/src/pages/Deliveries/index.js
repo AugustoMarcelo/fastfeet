@@ -122,7 +122,10 @@ export default function Deliveries() {
                 <td>{delivery.recipient.name}</td>
                 <td className="deliveryman">
                   <img
-                    src={`https://ui-avatars.com/api/?size=32&rounded=true&name=${delivery.deliveryman.name}`}
+                    src={
+                      delivery.deliveryman.avatar.url ||
+                      `https://ui-avatars.com/api/?size=32&rounded=true&name=${delivery.deliveryman.name}`
+                    }
                     alt="Avatar"
                   />
                   {delivery.deliveryman.name}
