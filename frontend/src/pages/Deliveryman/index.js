@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
 
@@ -16,7 +16,7 @@ export default function Deliveryman() {
   const [query, setQuery] = useState('');
   const [deliveryman, setDeliveryman] = useState([]);
 
-  async function loadDeliveryman() {
+  const loadDeliveryman = useCallback(async () => {
     const response = await api.get('deliverymen', {
       params: {
         ...pagination,
@@ -24,15 +24,11 @@ export default function Deliveryman() {
       },
     });
     setDeliveryman(response.data.rows);
-  }
+  }, [pagination, query]);
 
   useEffect(() => {
     loadDeliveryman();
-  }, [query]);
-
-  useEffect(() => {
-    loadDeliveryman();
-  }, [pagination]);
+  }, [loadDeliveryman]);
 
   function handleClick() {
     console.tron.log('Página de cadastro');

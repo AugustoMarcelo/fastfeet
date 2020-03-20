@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
 
@@ -11,22 +11,18 @@ export default function Problems() {
   const [problems, setProblems] = useState([]);
   const [query, setQuery] = useState('');
 
-  async function loadProblems() {
+  const loadProblems = useCallback(async () => {
     const response = await api.get('deliveries/problems', {
       params: {
         q: query,
       },
     });
     setProblems(response.data.rows);
-  }
-
-  useEffect(() => {
-    loadProblems();
-  }, []);
-
-  useEffect(() => {
-    loadProblems();
   }, [query]);
+
+  useEffect(() => {
+    loadProblems();
+  }, [loadProblems]);
 
   function handleSearch(text) {
     setQuery(text);

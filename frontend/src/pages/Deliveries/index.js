@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
 
@@ -44,7 +44,7 @@ export default function Deliveries() {
     };
   }
 
-  async function loadDeliveries() {
+  const loadDeliveries = useCallback(async () => {
     const { limit, page } = pagination;
     const response = await api.get('/deliveries', {
       params: {
@@ -60,15 +60,11 @@ export default function Deliveries() {
         status: getStatus(deliv),
       }))
     );
-  }
+  }, [pagination, query]);
 
   useEffect(() => {
     loadDeliveries();
-  }, [query]);
-
-  useEffect(() => {
-    loadDeliveries();
-  }, [pagination]);
+  }, [loadDeliveries]);
 
   function handleAddClick() {
     console.tron.log('Mudar de página');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
 
@@ -16,7 +16,7 @@ export default function Recipients() {
   const [query, setQuery] = useState('');
   const [recipients, setRecipients] = useState([]);
 
-  async function loadRecipients() {
+  const loadRecipients = useCallback(async () => {
     const response = await api.get('recipients', {
       params: {
         ...pagination,
@@ -24,11 +24,11 @@ export default function Recipients() {
       },
     });
     setRecipients(response.data.rows);
-  }
+  }, [pagination, query]);
 
   useEffect(() => {
     loadRecipients();
-  }, []);
+  }, [loadRecipients]);
 
   function handleClick() {
     console.tron.log('Abrir página de cadastro');
@@ -37,14 +37,6 @@ export default function Recipients() {
   function handleSearch(text) {
     setQuery(text);
   }
-
-  useEffect(() => {
-    loadRecipients();
-  }, [query]);
-
-  useEffect(() => {
-    loadRecipients();
-  }, [pagination]);
 
   function handleNextPage() {
     const { page } = pagination;
