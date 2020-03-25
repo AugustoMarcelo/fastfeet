@@ -57,3 +57,20 @@ Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **D
  - Executar o comando `yarn` para fazer o download de todas as dependências necessárias para executar o projeto;
 
  - Feitos os downloads de todas as dependências, execute `yarn android`, caso seja a primeira execução, ou `yarn start` para inicilizar o aplicativo;
+
+ # Interfaces da aplicação
+ > Página de Login
+
+ <img src="./screens/login.png" alt="Página de login" />
+
+ > Página de listagem de encomendas
+
+ <img src="./screens/deliveries.png" alt="Listagem de encomendas" />
+
+ > Página de listagem de problemas
+
+ <img src="./screens/problems.png" alt="Listagem de problemas" />
+
+ > Página de criação de destinatário
+
+ <img src="./screens/create-recipient.png" alt="Cadastro de destinatário" />
