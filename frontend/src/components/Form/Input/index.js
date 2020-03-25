@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
+import PropTypes from 'prop-types';
 
 import { InputGroup } from './styles';
 
@@ -23,3 +24,8 @@ export default function Input({ name, label, ...rest }) {
     </InputGroup>
   );
 }
+
+Input.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+};
