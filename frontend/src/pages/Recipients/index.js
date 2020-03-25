@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
+import history from '~/services/history';
 
 import PageHeaderList from '../../components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
@@ -30,10 +31,6 @@ export default function Recipients() {
     loadRecipients();
   }, [loadRecipients]);
 
-  function handleClick() {
-    console.tron.log('Abrir página de cadastro');
-  }
-
   function handleSearch(text) {
     setQuery(text);
   }
@@ -59,7 +56,7 @@ export default function Recipients() {
       <PageHeaderList
         pageTitle="Gerenciando destinatários"
         inputPlaceholder="Buscar por destinatários"
-        handleClick={handleClick}
+        handleClick={() => history.push('/recipients/create')}
         handleSearch={handleSearch}
       />
       {recipients.length ? (
