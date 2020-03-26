@@ -76,7 +76,12 @@ export default function Recipients() {
                 <td>{recipient.name}</td>
                 <td>{`${recipient.street}, ${recipient.number}, ${recipient.city} - ${recipient.state}`}</td>
                 <td>
-                  <DropdownMenu onEdit={() => {}} onDelete={() => {}} />
+                  <DropdownMenu
+                    onEdit={() =>
+                      history.push(`/recipients/edit/${recipient.id}`)
+                    }
+                    onDelete={() => {}}
+                  />
                 </td>
               </tr>
             ))}
