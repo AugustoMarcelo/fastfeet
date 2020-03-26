@@ -1,6 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+
+import api from '~/services/api';
+import { addRecipientRequest } from '~/store/modules/recipients/actions';
 
 import Input from '~/components/Form/Input';
 import InputMask from '~/components/Form/InputMask';
@@ -11,6 +16,8 @@ import PageHeaderManage from '~/components/PageHeaderManage';
 
 export default function ManageRecipient() {
   const formRef = useRef(null);
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
   async function handleSubmitForm() {
     try {
@@ -20,14 +27,16 @@ export default function ManageRecipient() {
         number: Yup.string().required('Campo Número é obrigatório'),
         city: Yup.string().required('Campo Cidade é obrigatório'),
         state: Yup.string().required('Campo Estado é obrigatório'),
-        cep: Yup.string().required('Campo CEP é obrigatório'),
+        zipcode: Yup.string().required('Campo CEP é obrigatório'),
       });
 
       await schema.validate(formRef.current.getData(), {
         abortEarly: false,
       });
 
-      console.tron.log(formRef.current.getData());
+      dispatch(addRecipientRequest(formRef.current.getData()));
+
+      formRef.current.reset();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -40,6 +49,16 @@ export default function ManageRecipient() {
       }
     }
   }
+
+  useEffect(() => {
+    async function loadRecipient() {
+      const { data } = await api.get(`recipients/${id}`);
+      console.tron.log(data);
+      // formRef.current.setData(data);
+    }
+
+    loadRecipient();
+  }, [id]);
 
   return (
     <>
@@ -62,7 +81,7 @@ export default function ManageRecipient() {
             <InputMask
               label="CEP:"
               mask="99999-999"
-              name="cep"
+              name="zipcode"
               placeholder="000000-000"
             />
           </Block3>
