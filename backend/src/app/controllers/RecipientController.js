@@ -74,6 +74,20 @@ class RecipientController {
 
     return response.status(200).json(recipient);
   }
+
+  async show(request, response) {
+    const { id } = request.params;
+
+    const recipient = await Recipient.findByPk(id);
+
+    if (!recipient) {
+      return response
+        .status(401)
+        .json({ error: 'Destinatário não encontrado' });
+    }
+
+    return response.status(200).json(recipient);
+  }
 }
 
 export default new RecipientController();
