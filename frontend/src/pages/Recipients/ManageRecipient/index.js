@@ -5,7 +5,10 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import api from '~/services/api';
-import { addRecipientRequest } from '~/store/modules/recipients/actions';
+import {
+  addRecipientRequest,
+  updateRecipientRequest,
+} from '~/store/modules/recipients/actions';
 
 import Input from '~/components/Form/Input';
 import InputMask from '~/components/Form/InputMask';
@@ -20,32 +23,36 @@ export default function ManageRecipient() {
   const dispatch = useDispatch();
 
   async function handleSubmitForm() {
-    try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Campo Nome é obrigatório'),
-        street: Yup.string().required('Campo Rua é obrigatório'),
-        number: Yup.string().required('Campo Número é obrigatório'),
-        city: Yup.string().required('Campo Cidade é obrigatório'),
-        state: Yup.string().required('Campo Estado é obrigatório'),
-        zipcode: Yup.string().required('Campo CEP é obrigatório'),
-      });
-
-      await schema.validate(formRef.current.getData(), {
-        abortEarly: false,
-      });
-
-      dispatch(addRecipientRequest(formRef.current.getData()));
-
-      formRef.current.reset();
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errorMessages = {};
-
-        error.inner.forEach(err => {
-          errorMessages[err.path] = err.message;
+    if (id) {
+      dispatch(updateRecipientRequest(formRef.current.getData(), id));
+    } else {
+      try {
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Campo Nome é obrigatório'),
+          street: Yup.string().required('Campo Rua é obrigatório'),
+          number: Yup.string().required('Campo Número é obrigatório'),
+          city: Yup.string().required('Campo Cidade é obrigatório'),
+          state: Yup.string().required('Campo Estado é obrigatório'),
+          zipcode: Yup.string().required('Campo CEP é obrigatório'),
         });
 
-        formRef.current.setErrors(errorMessages);
+        await schema.validate(formRef.current.getData(), {
+          abortEarly: false,
+        });
+
+        dispatch(addRecipientRequest(formRef.current.getData()));
+
+        formRef.current.reset();
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errorMessages = {};
+
+          error.inner.forEach(err => {
+            errorMessages[err.path] = err.message;
+          });
+
+          formRef.current.setErrors(errorMessages);
+        }
       }
     }
   }
@@ -53,8 +60,7 @@ export default function ManageRecipient() {
   useEffect(() => {
     async function loadRecipient() {
       const { data } = await api.get(`recipients/${id}`);
-      console.tron.log(data);
-      // formRef.current.setData(data);
+      formRef.current.setData(data);
     }
 
     loadRecipient();
