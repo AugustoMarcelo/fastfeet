@@ -25,8 +25,13 @@ export default function InputMask({ name, label, ...rest }) {
 
   return (
     <InputGroup>
-      {label && <label>{label}</label>}
-      <ReactInputMask ref={inputRef} defaultValue={defaultValue} {...rest} />
+      {label && <label htmlFor={fieldName}>{label}</label>}
+      <ReactInputMask
+        id={fieldName}
+        ref={inputRef}
+        defaultValue={defaultValue}
+        {...rest}
+      />
       {error && <span>{error}</span>}
     </InputGroup>
   );
