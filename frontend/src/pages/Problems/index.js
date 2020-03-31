@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 
 import PageHeaderList from '~/components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
 import { EmptyContent } from '~/components/styles/Table';
+import Modal from '~/components/Modal';
 import { Table } from './styles';
 
 export default function Problems() {
   const [problems, setProblems] = useState([]);
   const [query, setQuery] = useState('');
+
+  const modalRef = useRef(null);
 
   const loadProblems = useCallback(async () => {
     const response = await api.get('deliveries/problems', {
@@ -26,6 +30,31 @@ export default function Problems() {
 
   function handleSearch(text) {
     setQuery(text);
+  }
+
+  async function handleCancelDelivery(id) {
+    const result = window.confirm('Deseja realmente cancelar a encomenda?');
+
+    if (result) {
+      try {
+        await api.put(`problem/${id}/cancel-delivery`);
+
+        setProblems(problems.filter(problem => problem.delivery.id !== id));
+
+        toast.success('Encomenda cancelada com sucesso');
+      } catch (err) {
+        toast.error('Não foi possível cancelar a encomenda. Tente mais tarde.');
+      }
+    }
+  }
+
+  const content = data => {
+    return <div>{data}</div>;
+  };
+
+  function handleViewProblem(problem) {
+    modalRef.current.setModalContent(content(problem.description));
+    modalRef.current.show();
   }
 
   return (
@@ -51,8 +80,8 @@ export default function Problems() {
                 <td>{problem.description}</td>
                 <td>
                   <DropdownMenu
-                    onView={() => {}}
-                    onDelete={() => {}}
+                    onView={() => handleViewProblem(problem)}
+                    onDelete={() => handleCancelDelivery(problem.id)}
                     deleteLabel="Cancelar encomenda"
                   />
                 </td>
@@ -63,6 +92,7 @@ export default function Problems() {
       ) : (
         <EmptyContent>Nenhuma encomenda com problemas</EmptyContent>
       )}
+      <Modal ref={modalRef} modalTitle="Visualizar problema" />
     </>
   );
 }
