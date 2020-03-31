@@ -80,7 +80,6 @@ export default function Recipients() {
                     onEdit={() =>
                       history.push(`/recipients/edit/${recipient.id}`)
                     }
-                    onDelete={() => {}}
                   />
                 </td>
               </tr>
