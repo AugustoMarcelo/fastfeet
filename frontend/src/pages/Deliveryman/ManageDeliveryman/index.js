@@ -55,6 +55,8 @@ export default function ManageRecipient() {
 
   useEffect(() => {
     async function loadRecipient() {
+      if (!id) return;
+
       const { data } = await api.get(`deliverymen/${id}`);
       formRef.current.setData(data);
     }

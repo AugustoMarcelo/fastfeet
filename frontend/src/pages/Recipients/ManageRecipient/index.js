@@ -58,6 +58,8 @@ export default function ManageRecipient() {
   }
 
   useEffect(() => {
+    if (!id) return;
+
     async function loadRecipient() {
       const { data } = await api.get(`recipients/${id}`);
       formRef.current.setData(data);
