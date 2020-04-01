@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import api from '~/services/api';
+import history from '~/services/history';
 
 import PageHeaderList from '~/components/PageHeaderList';
 import Pagination from '~/components/Pagination';
@@ -30,10 +31,6 @@ export default function Deliveryman() {
     loadDeliveryman();
   }, [loadDeliveryman]);
 
-  function handleClick() {
-    console.tron.log('Página de cadastro');
-  }
-
   function handleSearch(text) {
     setQuery(text);
   }
@@ -59,7 +56,7 @@ export default function Deliveryman() {
       <PageHeaderList
         pageTitle="Gerenciando entregadores"
         inputPlaceholder="Buscar por entregadores"
-        handleClick={handleClick}
+        handleClick={() => history.push('deliveryman/create')}
         handleSearch={handleSearch}
       />
       {deliveryman.length ? (
@@ -89,7 +86,10 @@ export default function Deliveryman() {
                 <td>{man.name}</td>
                 <td>{man.email}</td>
                 <td>
-                  <DropdownMenu onEdit={() => {}} onDelete={() => {}} />
+                  <DropdownMenu
+                    onEdit={() => history.push(`deliveryman/edit/${man.id}`)}
+                    onDelete={() => {}}
+                  />
                 </td>
               </tr>
             ))}
