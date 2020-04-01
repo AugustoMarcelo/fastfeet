@@ -18,8 +18,13 @@ export default function Input({ name, label, ...rest }) {
 
   return (
     <InputGroup>
-      {label && <label>{label}</label>}
-      <input ref={inputRef} {...rest} defaultValue={defaultValue} />
+      {label && <label htmlFor={fieldName}>{label}</label>}
+      <input
+        id={fieldName}
+        ref={inputRef}
+        {...rest}
+        defaultValue={defaultValue}
+      />
       {error && <span>{error}</span>}
     </InputGroup>
   );
