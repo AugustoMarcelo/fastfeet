@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import api from '~/services/api';
+import history from '~/services/history';
 
 import PageHeaderList from '~/components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
 import Pagination from '~/components/Pagination';
+import Modal from '~/components/Modal';
 import { EmptyContent } from '~/components/styles/Table';
-import { Table } from './styles';
+import { Table, Delivery } from './styles';
 
 export default function Deliveries() {
   const [deliveries, setDeliveries] = useState([]);
@@ -15,6 +17,8 @@ export default function Deliveries() {
     page: 1,
     limit: 5,
   });
+
+  const modalRef = useRef(null);
 
   function getStatus(delivery) {
     if (delivery.canceled_at) {
@@ -66,10 +70,6 @@ export default function Deliveries() {
     loadDeliveries();
   }, [loadDeliveries]);
 
-  function handleAddClick() {
-    console.tron.log('Mudar de página');
-  }
-
   function handleSearch(text) {
     setQuery(text);
   }
@@ -90,12 +90,44 @@ export default function Deliveries() {
     });
   }
 
+  const content = delivery => {
+    return (
+      <Delivery>
+        <div className="recipient">
+          <p>{delivery.recipient.street}</p>
+          <p>
+            {delivery.recipient.city} - {delivery.recipient.state}
+          </p>
+          <p>{delivery.recipient.zipcode}</p>
+        </div>
+        <strong>Datas</strong>
+        <div className="data">
+          <div className="item">
+            <strong>Retirada:</strong> {delivery.start_date}
+          </div>
+          <div className="item">
+            <strong>Entrega:</strong> {delivery.end_date}
+          </div>
+        </div>
+        <strong>Assinatura do destinatário</strong>
+        {delivery.signature && (
+          <img src={delivery.signature.url} alt="Assinatura do destinatário" />
+        )}
+      </Delivery>
+    );
+  };
+
+  function handleViewDelivery(delivery) {
+    modalRef.current.setModalContent(content(delivery));
+    modalRef.current.show();
+  }
+
   return (
     <>
       <PageHeaderList
         pageTitle="Gerenciando encomendas"
         inputPlaceholder="Buscar por encomendas"
-        handleClick={handleAddClick}
+        handleClick={() => history.push('/deliveries/create')}
         handleSearch={handleSearch}
       />
       {deliveries.length ? (
@@ -135,8 +167,9 @@ export default function Deliveries() {
                 </td>
                 <td>
                   <DropdownMenu
-                    onEdit={() => alert('Saindo da página')}
-                    onDelete={() => alert('Deletando usuário')}
+                    onView={() => handleViewDelivery(delivery)}
+                    onEdit={() => {}}
+                    onDelete={() => {}}
                   />
                 </td>
               </tr>
@@ -154,6 +187,7 @@ export default function Deliveries() {
           deliveries.length === 0 || deliveries.length < pagination.limit
         }
       />
+      <Modal ref={modalRef} modalTitle="Informações da Encomenda" />
     </>
   );
 }

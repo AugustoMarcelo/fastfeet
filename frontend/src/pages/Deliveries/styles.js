@@ -35,3 +35,41 @@ export const Table = styled(TableStyle)`
     }
   }
 `;
+
+export const Delivery = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  color: #666;
+
+  > strong {
+    color: initial;
+  }
+
+  .recipient {
+    border-bottom: 1px solid #eee;
+
+    p {
+      margin-bottom: 5px;
+    }
+  }
+
+  > strong {
+    margin: 10px 0;
+  }
+
+  .data {
+    border-bottom: 1px solid #eee;
+
+    div {
+      margin-bottom: 5px;
+    }
+  }
+
+  img {
+    margin: 15px 0;
+    text-align: center;
+    width: 250px;
+    align-self: center;
+  }
+`;
