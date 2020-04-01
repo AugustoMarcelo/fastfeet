@@ -19,8 +19,10 @@ export const Box = styled.div`
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 0 10px #00000033;
-  min-width: 450px;
+  width: 100%;
+  max-width: 450px;
   padding: 20px;
+  margin: 0 10px;
 
   header {
     display: flex;
