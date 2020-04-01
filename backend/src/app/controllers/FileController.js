@@ -11,6 +11,18 @@ class FileController {
 
     return response.json(file);
   }
+
+  async show(request, response) {
+    const { id } = request.params;
+
+    const file = await File.findByPk(id);
+
+    if (!file) {
+      return response.status(400).json({ error: 'Arquivo não encontrado' });
+    }
+
+    return response.status(200).json(file);
+  }
 }
 
 export default new FileController();
