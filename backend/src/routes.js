@@ -42,6 +42,7 @@ routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
 
 routes.get('/deliverymen', DeliveryManController.index);
+routes.get('/deliverymen/:id', DeliveryManController.show);
 routes.post('/deliverymen', DeliveryManController.store);
 routes.put('/deliverymen/:id', DeliveryManController.update);
 routes.delete('/deliverymen/:id', DeliveryManController.destroy);
@@ -59,5 +60,6 @@ routes.get('/delivery/:id/problems', DeliveryProblemController.show);
 routes.put('/problem/:id/cancel-delivery', CancelDeliveryController.update);
 
 routes.post('/files', upload.single('file'), FileController.store);
+routes.get('/files/:id', FileController.show);
 
 export default routes;
