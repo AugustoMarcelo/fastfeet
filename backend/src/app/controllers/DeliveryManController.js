@@ -38,6 +38,27 @@ class DeliveryManController {
     return response.status(200).json(deliverymen);
   }
 
+  async show(request, response) {
+    const { id } = request.params;
+
+    const deliveryMan = await DeliveryMan.findByPk(id, {
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
+
+    if (!deliveryMan) {
+      return response.status(400).json({ error: 'Entregador não encontrado' });
+    }
+
+    return response.status(200).json(deliveryMan);
+  }
+
   async store(request, response) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
