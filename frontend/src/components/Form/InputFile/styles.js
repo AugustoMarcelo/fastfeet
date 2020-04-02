@@ -25,6 +25,30 @@ export const LabelContainer = styled.label`
     width: 160px;
     transition: border-color 0.2s;
 
+    &.error {
+      border: 2px dashed #f94d6a;
+
+      span {
+        color: #f94d6a;
+      }
+
+      svg {
+        fill: #f94d6a;
+      }
+
+      &:hover {
+        border-color: ${darken(0.1, '#f94d6a')};
+
+        svg {
+          fill: ${darken(0.1, '#f94d6a')};
+        }
+
+        span {
+          color: ${darken(0.1, '#f94d6a')};
+        }
+      }
+    }
+
     span {
       font-size: 16px;
       color: #ddd;

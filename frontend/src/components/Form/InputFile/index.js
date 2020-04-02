@@ -55,13 +55,15 @@ export default function InputFile({ name, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-    <LabelContainer className={error && 'error'} htmlFor={fieldName}>
+    <LabelContainer htmlFor={fieldName}>
       {preview ? (
         <div className="image-placeholder">
           <img src={preview} alt="Preview" />
         </div>
       ) : (
-        <div className="image-placeholder">
+        <div
+          className={error ? 'image-placeholder error' : 'image-placeholder'}
+        >
           <MdImage color="#ddd" size={36} />
           <span>Adicionar foto</span>
         </div>
