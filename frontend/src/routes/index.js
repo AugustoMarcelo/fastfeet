@@ -4,6 +4,7 @@ import Route from './Route';
 
 import Login from '../pages/Login';
 import Deliveries from '../pages/Deliveries';
+import ManageDelivery from '../pages/Deliveries/ManageDelivery';
 import Deliveryman from '../pages/Deliveryman';
 import ManageDeliveryman from '../pages/Deliveryman/ManageDeliveryman';
 import Recipients from '../pages/Recipients';
@@ -14,7 +15,10 @@ export default function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={Login} />
-      <Route path="/deliveries" component={Deliveries} isPrivate />
+      <Route path="/deliveries" exact component={Deliveries} isPrivate />
+      <Route path="/deliveries/create" component={ManageDelivery} isPrivate />
+      <Route path="/deliveries/edit/:id" component={ManageDelivery} isPrivate />
+      <Route path="/deliveries" exact component={Deliveries} isPrivate />
       <Route path="/deliveryman" exact component={Deliveryman} isPrivate />
       <Route
         path="/deliveryman/create"
