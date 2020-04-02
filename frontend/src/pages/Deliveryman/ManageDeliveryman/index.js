@@ -30,6 +30,7 @@ export default function ManageRecipient() {
         const schema = Yup.object().shape({
           name: Yup.string().required('Campo Nome é obrigatório'),
           email: Yup.string().required('Campo E-mail é obrigatório'),
+          avatar_id: Yup.number().required(),
         });
 
         await schema.validate(formRef.current.getData(), {
@@ -38,6 +39,7 @@ export default function ManageRecipient() {
 
         dispatch(addDeliverymanRequest(formRef.current.getData()));
 
+        formRef.current.setErrors({});
         formRef.current.reset();
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
