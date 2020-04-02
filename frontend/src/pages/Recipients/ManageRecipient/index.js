@@ -42,6 +42,7 @@ export default function ManageRecipient() {
 
         dispatch(addRecipientRequest(formRef.current.getData()));
 
+        formRef.current.setErrors({});
         formRef.current.reset();
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
