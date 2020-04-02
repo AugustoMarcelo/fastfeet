@@ -63,6 +63,7 @@ export default function Problems() {
         pageTitle="Problemas na entrega"
         inputPlaceholder="Buscar por encomendas"
         handleSearch={handleSearch}
+        disabledInput={problems.length === 0 || query.length === 0}
       />
       {problems.length ? (
         <Table>
