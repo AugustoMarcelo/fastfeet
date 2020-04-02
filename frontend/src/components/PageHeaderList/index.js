@@ -10,6 +10,7 @@ export default function PageHeaderList({
   inputPlaceholder,
   handleClick,
   handleSearch,
+  disabledInput,
 }) {
   return (
     <Container>
@@ -20,6 +21,7 @@ export default function PageHeaderList({
             icon={MdSearch}
             type="text"
             placeholder={inputPlaceholder}
+            disabled={disabledInput}
             onChange={e => handleSearch(e.target.value)}
           />
         )}
@@ -39,4 +41,9 @@ PageHeaderList.propTypes = {
   inputPlaceholder: PropTypes.string,
   handleClick: PropTypes.func,
   handleSearch: PropTypes.func,
+  disabledInput: PropTypes.bool,
+};
+
+PageHeaderList.defaultProps = {
+  disabledInput: false,
 };
