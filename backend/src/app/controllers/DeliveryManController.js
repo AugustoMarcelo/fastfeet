@@ -16,7 +16,7 @@ class DeliveryManController {
     if (q) {
       where = {
         name: {
-          [Op.like]: `%${q}%`,
+          [Op.iLike]: `%${q}%`,
         },
       };
     }
