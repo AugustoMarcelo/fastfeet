@@ -58,6 +58,7 @@ export default function Recipients() {
         inputPlaceholder="Buscar por destinatários"
         handleClick={() => history.push('/recipients/create')}
         handleSearch={handleSearch}
+        disabledInput={recipients.length === 0 && query.length === 0}
       />
       {recipients.length ? (
         <Table>
