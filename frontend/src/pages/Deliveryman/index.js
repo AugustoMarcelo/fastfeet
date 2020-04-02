@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -35,6 +36,19 @@ export default function Deliveryman() {
     setQuery(text);
   }
 
+  async function handleDelete(id) {
+    try {
+      const response = await api.delete(`deliverymen/${id}`);
+
+      if (response.status === 204) {
+        toast.success('Entregador removido com sucesso');
+        setDeliveryman(deliveryman.filter(man => man.id !== id));
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  }
+
   function handleNextPage() {
     const { page } = pagination;
     setPagination({
@@ -58,6 +72,7 @@ export default function Deliveryman() {
         inputPlaceholder="Buscar por entregadores"
         handleClick={() => history.push('deliveryman/create')}
         handleSearch={handleSearch}
+        disabledInput={deliveryman.length === 0 && query.length === 0}
       />
       {deliveryman.length ? (
         <Table>
@@ -88,7 +103,7 @@ export default function Deliveryman() {
                 <td>
                   <DropdownMenu
                     onEdit={() => history.push(`deliveryman/edit/${man.id}`)}
-                    onDelete={() => {}}
+                    onDelete={() => handleDelete(man.id)}
                   />
                 </td>
               </tr>
