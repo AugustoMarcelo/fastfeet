@@ -129,6 +129,7 @@ export default function Deliveries() {
         inputPlaceholder="Buscar por encomendas"
         handleClick={() => history.push('/deliveries/create')}
         handleSearch={handleSearch}
+        disabledInput={deliveries.length === 0 && query.length === 0}
       />
       {deliveries.length ? (
         <Table>
@@ -168,7 +169,9 @@ export default function Deliveries() {
                 <td>
                   <DropdownMenu
                     onView={() => handleViewDelivery(delivery)}
-                    onEdit={() => {}}
+                    onEdit={() =>
+                      history.push(`/deliveries/edit/${delivery.id}`)
+                    }
                     onDelete={() => {}}
                   />
                 </td>
