@@ -36,6 +36,9 @@ routes.post('/delivery/:id/problems', DeliveryProblemController.store);
 routes.get('/delivery/:id/problems', DeliveryProblemController.show);
 
 routes.use(authMiddleware);
+/** Rota que lista todas as encomendas com problemas */
+routes.get('/deliveries/problems', DeliveryProblemController.index);
+
 routes.get('/recipients', RecipientController.index);
 routes.get('/recipients/:id', RecipientController.show);
 routes.post('/recipients', RecipientController.store);
@@ -48,14 +51,11 @@ routes.put('/deliverymen/:id', DeliveryManController.update);
 routes.delete('/deliverymen/:id', DeliveryManController.destroy);
 
 routes.get('/deliveries', DeliveryController.index);
+routes.get('/deliveries/:id', DeliveryController.show);
 routes.post('/deliveries', DeliveryController.store);
 routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.destroy);
 
-/** Rota que lista todas as encomendas com problemas */
-routes.get('/deliveries/problems', DeliveryProblemController.index);
-/** Rota que lista todos os problemas de uma encomenda */
-routes.get('/delivery/:id/problems', DeliveryProblemController.show);
 /** Rota para a distribuidora cancelar uma entrega */
 routes.put('/problem/:id/cancel-delivery', CancelDeliveryController.update);
 
