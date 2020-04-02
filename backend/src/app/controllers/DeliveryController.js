@@ -54,6 +54,35 @@ class DeliveryController {
     return response.status(200).json(deliveries);
   }
 
+  async show(request, response) {
+    const { id } = request.params;
+
+    const delivery = await Delivery.findByPk(id, {
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: DeliveryMan,
+          as: 'deliveryman',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    });
+
+    if (!delivery) {
+      return response.status(400).json({ error: 'Encomenda não encontrada' });
+    }
+
+    return response.status(200).json(delivery);
+  }
+
   async store(request, response) {
     const schema = Yup.object().shape({
       recipient_id: Yup.number().required(),
