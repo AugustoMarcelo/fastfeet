@@ -11,8 +11,8 @@ class RecipientController {
 
     if (q) {
       where = {
-        product: {
-          [Op.like]: `%${q}%`,
+        name: {
+          [Op.iLike]: `%${q}%`,
         },
       };
     }
