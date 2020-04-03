@@ -96,6 +96,18 @@ class DeliveryManController {
       return response.status(400).json({ error: 'Dados inválidos' });
     }
 
+    const { avatar_id } = request.body;
+
+    if (avatar_id !== deliveryMan.avatar_id) {
+      const avatar = await File.findByPk(avatar_id);
+
+      avatar.destroy();
+
+      promisify(fs.unlink)(
+        path.resolve(__dirname, '..', '..', '..', 'tmp', 'uploads', avatar.path)
+      );
+    }
+
     deliveryMan = await deliveryMan.update(request.body);
 
     return response.json(deliveryMan);
