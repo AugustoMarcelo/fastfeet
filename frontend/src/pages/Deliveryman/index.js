@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
@@ -7,6 +7,8 @@ import history from '~/services/history';
 import PageHeaderList from '~/components/PageHeaderList';
 import Pagination from '~/components/Pagination';
 import DropdownMenu from '~/components/Dropdown';
+import Modal from '~/components/Modal';
+import { ConfirmContent } from '~/components/Modal/styles';
 import { EmptyContent } from '~/components/styles/Table';
 import { Table } from './styles';
 
@@ -17,6 +19,8 @@ export default function Deliveryman() {
   });
   const [query, setQuery] = useState('');
   const [deliveryman, setDeliveryman] = useState([]);
+
+  const confirmModalRef = useRef(null);
 
   const loadDeliveryman = useCallback(async () => {
     const response = await api.get('deliverymen', {
@@ -36,18 +40,37 @@ export default function Deliveryman() {
     setQuery(text);
   }
 
-  async function handleDelete(id) {
+  async function handleDeleteDeliveryman(id) {
     try {
       const response = await api.delete(`deliverymen/${id}`);
 
       if (response.status === 204) {
         toast.success('Entregador removido com sucesso');
         setDeliveryman(deliveryman.filter(man => man.id !== id));
+        confirmModalRef.current.hide();
       }
     } catch (error) {
       toast.error(error.response.data.error);
     }
   }
+
+  const confirmContent = man => {
+    return (
+      <ConfirmContent>
+        <p className="question">
+          Deseja remover o entregador <strong>{man.name}</strong>?
+        </p>
+        <div className="actions">
+          <button type="button" onClick={() => confirmModalRef.current.hide()}>
+            Cancelar
+          </button>
+          <button type="button" onClick={() => handleDeleteDeliveryman(man.id)}>
+            Remover
+          </button>
+        </div>
+      </ConfirmContent>
+    );
+  };
 
   function handleNextPage() {
     const { page } = pagination;
@@ -63,6 +86,11 @@ export default function Deliveryman() {
       ...pagination,
       page: page - 1,
     });
+  }
+
+  function handleConfirmDelete(delivery) {
+    confirmModalRef.current.setModalContent(confirmContent(delivery));
+    confirmModalRef.current.show();
   }
 
   return (
@@ -103,7 +131,7 @@ export default function Deliveryman() {
                 <td>
                   <DropdownMenu
                     onEdit={() => history.push(`deliveryman/edit/${man.id}`)}
-                    onDelete={() => handleDelete(man.id)}
+                    onDelete={() => handleConfirmDelete(man)}
                   />
                 </td>
               </tr>
@@ -121,6 +149,7 @@ export default function Deliveryman() {
           deliveryman.length === 0 || deliveryman.length < pagination.limit
         }
       />
+      <Modal ref={confirmModalRef} modalTitle="Remover registro" atTop />
     </>
   );
 }
