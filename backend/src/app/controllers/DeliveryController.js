@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
 import { Op } from 'sequelize';
+import fs from 'fs';
+import { promisify } from 'util';
+import path from 'path';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
@@ -152,6 +155,24 @@ class DeliveryController {
 
     if (!delivery) {
       return response.status(401).json({ error: 'Encomenda não encontrada' });
+    }
+
+    if (delivery.signature_id) {
+      const signature = await File.findByPk(delivery.signature_id);
+
+      signature.destroy();
+
+      promisify(fs.unlink)(
+        path.resolve(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          'tmp',
+          'uploads',
+          signature.path
+        )
+      );
     }
 
     delivery.destroy();
