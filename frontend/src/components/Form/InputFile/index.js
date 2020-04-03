@@ -61,6 +61,7 @@ export default function InputFile({ name, ...rest }) {
       ) : (
         <div
           className={error ? 'image-placeholder error' : 'image-placeholder'}
+          title="Clique para selecionar uma imagem"
         >
           <MdImage color="#ddd" size={36} />
           <span>Adicionar foto</span>
