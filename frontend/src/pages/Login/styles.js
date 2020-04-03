@@ -25,6 +25,7 @@ export const Card = styled.div`
   border-radius: 4px;
   box-shadow: 0px 0px 10px #00000033;
   padding: 50px 30px;
+  margin: 0 10px;
 
   form {
     button {
