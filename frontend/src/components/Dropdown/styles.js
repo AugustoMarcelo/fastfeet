@@ -35,8 +35,8 @@ export const Menu = styled.ul`
   width: max-content;
   box-shadow: 0 0 5px #00000026;
 
-  @media (max-width: 767px) {
-    right: -7px;
+  @media (max-width: 850px) {
+    left: -52px;
   }
 
   > span {
@@ -60,10 +60,6 @@ export const Menu = styled.ul`
       transform: rotate(135deg);
 
       box-shadow: -3px 3px 5px 0 #00000026;
-
-      @media (max-width: 767px) {
-        left: 115px;
-      }
     }
   }
 
