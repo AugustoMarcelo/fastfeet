@@ -61,6 +61,10 @@ export default function ManageRecipient() {
 
       const { data } = await api.get(`deliverymen/${id}`);
       formRef.current.setData(data);
+      formRef.current.setFieldValue('avatar_id', {
+        id: data.avatar_id,
+        ...data.avatar,
+      });
     }
 
     loadRecipient();
