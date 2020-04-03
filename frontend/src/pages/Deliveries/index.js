@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'react-toastify';
+
+import { formatDate } from '~/util/formatDate';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -7,6 +10,7 @@ import PageHeaderList from '~/components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
 import Pagination from '~/components/Pagination';
 import Modal from '~/components/Modal';
+import { ConfirmContent } from '~/components/Modal/styles';
 import { EmptyContent } from '~/components/styles/Table';
 import { Table, Delivery } from './styles';
 
@@ -19,6 +23,7 @@ export default function Deliveries() {
   });
 
   const modalRef = useRef(null);
+  const confirmModalRef = useRef(null);
 
   function getStatus(delivery) {
     if (delivery.canceled_at) {
@@ -90,6 +95,40 @@ export default function Deliveries() {
     });
   }
 
+  async function handleDeleteDelivery(id) {
+    const { status } = await api.delete(`deliveries/${id}`);
+
+    if (status === 204) {
+      toast.success('Encomenda removida com sucesso');
+      setDeliveries(deliveries.filter(delivery => delivery.id !== id));
+    } else {
+      toast.error('Não possível remover a encomenda. Tente novamente');
+    }
+    confirmModalRef.current.hide();
+  }
+
+  const confirmContent = delivery => {
+    return (
+      <ConfirmContent>
+        <p className="question">
+          Deseja remover a encomenda para o destinatário{' '}
+          <strong>{delivery.recipient.name}</strong>?
+        </p>
+        <div className="actions">
+          <button type="button" onClick={() => confirmModalRef.current.hide()}>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDeleteDelivery(delivery.id)}
+          >
+            Remover
+          </button>
+        </div>
+      </ConfirmContent>
+    );
+  };
+
   const content = delivery => {
     return (
       <Delivery>
@@ -103,10 +142,12 @@ export default function Deliveries() {
         <strong>Datas</strong>
         <div className="data">
           <div className="item">
-            <strong>Retirada:</strong> {delivery.start_date}
+            <strong>Retirada:</strong>{' '}
+            {formatDate(delivery.start_date, 'dd/MM/yyyy')}
           </div>
           <div className="item">
-            <strong>Entrega:</strong> {delivery.end_date}
+            <strong>Entrega:</strong>{' '}
+            {formatDate(delivery.end_date, 'dd/MM/yyyy')}
           </div>
         </div>
         <strong>Assinatura do destinatário</strong>
@@ -120,6 +161,11 @@ export default function Deliveries() {
   function handleViewDelivery(delivery) {
     modalRef.current.setModalContent(content(delivery));
     modalRef.current.show();
+  }
+
+  function handleConfirmDelete(delivery) {
+    confirmModalRef.current.setModalContent(confirmContent(delivery));
+    confirmModalRef.current.show();
   }
 
   return (
@@ -172,7 +218,7 @@ export default function Deliveries() {
                     onEdit={() =>
                       history.push(`/deliveries/edit/${delivery.id}`)
                     }
-                    onDelete={() => {}}
+                    onDelete={() => handleConfirmDelete(delivery)}
                   />
                 </td>
               </tr>
@@ -191,6 +237,7 @@ export default function Deliveries() {
         }
       />
       <Modal ref={modalRef} modalTitle="Informações da Encomenda" />
+      <Modal ref={confirmModalRef} modalTitle="Remover registro" atTop />
     </>
   );
 }
