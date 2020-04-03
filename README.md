@@ -1,10 +1,10 @@
-# FastFeet
+# :boom: FastFeet
 
 FastFeet é uma aplicação desenvolvida para uma transportadora fictícia. Ele permite gerenciar entregadores, destinatários, encomendas, relatar problemas nas entregas dentre outras funcionalidades. Além disso, realiza envio de e-mails para encomendas prontas para serem retiradas ou canceladas.
 
 Você pode consultar a <a href="./backend/docs.md" rel="noopener noreferrer">documentação</a> do backend e verificar informações sobre os <i>endpoints</i>.
 
-## Funcionalidades
+# :star: Funcionalidades
 
 - Cadastro de Administradores
 - Cadastro de Entregadores
@@ -15,9 +15,17 @@ Você pode consultar a <a href="./backend/docs.md" rel="noopener noreferrer">doc
  - *Cada entregador pode retirar até 5 encomendas por dia*
 - Cadastro de Problema nas entregas
 - Cancelamento de Entregas
-- Upload de Arquivos
 
-## Instruções para o backend
+# :gear: Tecnologias
+
+ - ReactJS
+ - Node.js
+ - Postgres
+ - Sequelize
+ - Styled-Components
+ - Redux/Sagas
+
+# :computer: Instruções para o backend
 
 Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **Docker**. Feitas as configurações, seguem os passos para executar o backend da aplicação:
 
@@ -45,20 +53,20 @@ Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **D
 
  - Após isso, execute `yarn dev` para que o backend esteja funcionando.
 
- # Instruções para o frontend
+ # :computer: Instruções para o frontend
 
  - Executar o comando `yarn` para fazer o download de todas as dependências necessárias para executar o projeto;
 
  - Feitos os downloads de todas as dependências, execute `yarn start` para inicilizar o frontend da aplicação;
 
-# Instruções para o mobile
+# :iphone: Instruções para o mobile
  > O projeto teve seu desenvolvimento focado em dispositivos ANDROID.
  
  - Executar o comando `yarn` para fazer o download de todas as dependências necessárias para executar o projeto;
 
  - Feitos os downloads de todas as dependências, execute `yarn android`, caso seja a primeira execução, ou `yarn start` para inicilizar o aplicativo;
 
- # Interfaces da aplicação
+ # :camera: Interfaces da aplicação
  > Página de Login
 
  <img src="./screens/login.png" alt="Página de login" />
@@ -67,10 +75,34 @@ Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **D
 
  <img src="./screens/deliveries.png" alt="Listagem de encomendas" />
 
+ > Página de criação/edição de entrega
+
+ <img src="./screens/create-delivery.png" alt="Criação/edição de entrega" />
+
+ > Modal de visualização de encomenda
+
+ <img src="./screens/view-delivery.png" alt="Visualização de encomenda" />
+
+ > Página de listagem de entregadores
+
+ <img src="./screens/deliveryman.png" alt="Listagem de entregadores" />
+
+ > Página de criação/edição de entregador
+
+ <img src="./screens/create-deliveryman.png" alt="Criação/edição de entregador" />
+
  > Página de listagem de problemas
 
  <img src="./screens/problems.png" alt="Listagem de problemas" />
 
- > Página de criação de destinatário
+ > Página de listagem de destinatários
+
+ <img src="./screens/recipients.png" alt="Listagem de destinatários" />
+
+ > Página de criação/edição de destinatário
 
  <img src="./screens/create-recipient.png" alt="Cadastro de destinatário" />
+
+ > Modal para confirmação de remoção de registro
+
+ <img src="./screens/delete-data.png" alt="Confirmação de remoção" />
