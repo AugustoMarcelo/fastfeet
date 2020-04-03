@@ -23,6 +23,10 @@ export const Select = styled(AsyncSelect)`
     .react-select__single-value {
       transform: none !important;
     }
+    .css-b8ldur-Input {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   .react-select__single-value {
