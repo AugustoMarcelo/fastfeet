@@ -12,7 +12,7 @@ export default function InputFile({ name, ...rest }) {
 
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const [preview, setPreview] = useState(defaultValue);
-  const [avatarId, setAvatarId] = useState(null);
+  const [avatarId, setAvatarId] = useState(defaultValue);
 
   const handlePreview = useCallback(async e => {
     const file = e.target.files && e.target.files[0];
@@ -45,11 +45,9 @@ export default function InputFile({ name, ...rest }) {
         setAvatarId(null);
         setPreview(null);
       },
-      async setValue(_, value) {
-        const response = await api.get(`files/${value}`);
-        const { url } = response.data;
-        setAvatarId(value);
-        setPreview(url);
+      setValue(_, value) {
+        setAvatarId(value.id);
+        setPreview(value.url);
       },
     });
   }, [fieldName, registerField]);
