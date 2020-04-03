@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { MdMenu, MdClose } from 'react-icons/md';
 
 import { signOut } from '~/store/modules/auth/actions';
 
@@ -10,6 +11,8 @@ import {
   ContentRight,
   Logo,
   Navigation,
+  MenuMobile,
+  MenuCloseMobile,
 } from './styles';
 import logo from '~/assets/logo.png';
 
@@ -23,12 +26,13 @@ export default function Header() {
     recipients: '',
     problems: '',
   });
+  const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
     const endpoint = location.pathname.split('/').filter(char => {
       return char !== '';
     });
-
+    setOpenMenu(false);
     switch (`/${endpoint[0]}`) {
       case '/deliveries':
         setSelectedMenus({ deliveries: 'active' });
@@ -50,8 +54,14 @@ export default function Header() {
   }
 
   return (
-    <Container>
+    <Container className={openMenu && 'is-open'}>
+      <MenuMobile type="button" onClick={() => setOpenMenu(true)}>
+        <MdMenu size={32} color="#7d40e7" />
+      </MenuMobile>
       <ContentLeft>
+        <MenuCloseMobile type="button" onClick={() => setOpenMenu(false)}>
+          <MdClose size={32} color="#7d40e7" />
+        </MenuCloseMobile>
         <Logo>
           <img src={logo} height={26} width={135} alt="FastFeet Logo" />
         </Logo>
