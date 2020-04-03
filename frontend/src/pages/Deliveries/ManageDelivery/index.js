@@ -33,7 +33,6 @@ export default function ManageDelivery() {
           deliveryman_id: Yup.string().required('Selecione um entregador'),
           product: Yup.string().required('Informe o produto'),
         });
-
         await schema.validate(formRef.current.getData(), {
           abortEarly: false,
         });
@@ -101,8 +100,16 @@ export default function ManageDelivery() {
       if (!id) return;
 
       const { data } = await api.get(`deliveries/${id}`);
-      console.tron.log(data);
+      const { recipient, deliveryman } = data;
       formRef.current.setData(data);
+      formRef.current.setFieldValue('recipient_id', {
+        value: recipient.id,
+        label: recipient.name,
+      });
+      formRef.current.setFieldValue('deliveryman_id', {
+        value: deliveryman.id,
+        label: deliveryman.name,
+      });
     }
 
     loadRecipient();
