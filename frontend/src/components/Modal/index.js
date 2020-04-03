@@ -4,7 +4,7 @@ import { MdClose } from 'react-icons/md';
 
 import { Background, Box } from './styles';
 
-const Modal = forwardRef(({ modalTitle }, ref) => {
+const Modal = forwardRef(({ modalTitle, atTop }, ref) => {
   const [visible, setVisible] = useState(false);
   const [content, setContent] = useState(null);
 
@@ -15,10 +15,13 @@ const Modal = forwardRef(({ modalTitle }, ref) => {
     show() {
       setVisible(true);
     },
+    hide() {
+      setVisible(false);
+    },
   }));
 
   return (
-    <Background style={{ display: !visible && 'none' }}>
+    <Background style={{ display: !visible && 'none' }} atTop={atTop}>
       <Box>
         <header>
           {modalTitle}
@@ -34,32 +37,11 @@ const Modal = forwardRef(({ modalTitle }, ref) => {
 
 Modal.propTypes = {
   modalTitle: PropTypes.string,
+  atTop: PropTypes.bool,
+};
+
+Modal.defaultProps = {
+  atTop: false,
 };
 
 export default Modal;
-
-// export default function Modal({ modalTitle, visible, content: Content }) {
-//   return (
-//     <Background style={{ display: !visible && 'none' }}>
-//       <Box>
-//         <header>
-//           {modalTitle}
-//           <button type="button">
-//             <MdClose size={22} color="#bbb" />
-//           </button>
-//         </header>
-//         <Content />
-//       </Box>
-//     </Background>
-//   );
-// }
-
-// Modal.propTypes = {
-//   modalTitle: PropTypes.string,
-//   visible: PropTypes.bool,
-//   content: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-// };
-
-// Modal.defaultProps = {
-//   visible: false,
-// };
