@@ -7,6 +7,7 @@ import PageHeaderList from '~/components/PageHeaderList';
 import DropdownMenu from '~/components/Dropdown';
 import { EmptyContent } from '~/components/styles/Table';
 import Modal from '~/components/Modal';
+import { ConfirmContent } from '~/components/Modal/styles';
 import { Table } from './styles';
 
 export default function Problems() {
@@ -14,6 +15,7 @@ export default function Problems() {
   const [query, setQuery] = useState('');
 
   const modalRef = useRef(null);
+  const confirmModalRef = useRef(null);
 
   const loadProblems = useCallback(async () => {
     const response = await api.get('deliveries/problems', {
@@ -32,19 +34,16 @@ export default function Problems() {
     setQuery(text);
   }
 
-  async function handleCancelDelivery(id) {
-    const result = window.confirm('Deseja realmente cancelar a encomenda?');
+  async function handleCancelDelivery(problem) {
+    try {
+      await api.put(`problem/${problem.id}/cancel-delivery`);
+      setProblems(problems.filter(p => p.delivery.id !== problem.delivery.id));
 
-    if (result) {
-      try {
-        await api.put(`problem/${id}/cancel-delivery`);
+      toast.success('Encomenda cancelada com sucesso');
 
-        setProblems(problems.filter(problem => problem.delivery.id !== id));
-
-        toast.success('Encomenda cancelada com sucesso');
-      } catch (err) {
-        toast.error('Não foi possível cancelar a encomenda. Tente mais tarde.');
-      }
+      confirmModalRef.current.hide();
+    } catch (err) {
+      toast.error('Não foi possível cancelar a encomenda. Tente mais tarde.');
     }
   }
 
@@ -52,9 +51,32 @@ export default function Problems() {
     return <div>{data}</div>;
   };
 
+  const confirmContent = problem => {
+    return (
+      <ConfirmContent>
+        <p className="question">
+          Deseja cancelar a encomenda <strong>#{problem.delivery.id}</strong>?
+        </p>
+        <div className="actions">
+          <button type="button" onClick={() => confirmModalRef.current.hide()}>
+            Fechar
+          </button>
+          <button type="button" onClick={() => handleCancelDelivery(problem)}>
+            Cancelar encomenda
+          </button>
+        </div>
+      </ConfirmContent>
+    );
+  };
+
   function handleViewProblem(problem) {
     modalRef.current.setModalContent(content(problem.description));
     modalRef.current.show();
+  }
+
+  function handleConfirmCancel(problem) {
+    confirmModalRef.current.setModalContent(confirmContent(problem));
+    confirmModalRef.current.show();
   }
 
   return (
@@ -63,7 +85,7 @@ export default function Problems() {
         pageTitle="Problemas na entrega"
         inputPlaceholder="Buscar por encomendas"
         handleSearch={handleSearch}
-        disabledInput={problems.length === 0 || query.length === 0}
+        disabledInput={problems.length === 0 && query.length === 0}
       />
       {problems.length ? (
         <Table>
@@ -82,7 +104,7 @@ export default function Problems() {
                 <td>
                   <DropdownMenu
                     onView={() => handleViewProblem(problem)}
-                    onDelete={() => handleCancelDelivery(problem.id)}
+                    onDelete={() => handleConfirmCancel(problem)}
                     deleteLabel="Cancelar encomenda"
                   />
                 </td>
@@ -94,6 +116,7 @@ export default function Problems() {
         <EmptyContent>Nenhuma encomenda com problemas</EmptyContent>
       )}
       <Modal ref={modalRef} modalTitle="Visualizar problema" />
+      <Modal ref={confirmModalRef} modalTitle="Remover registro" atTop />
     </>
   );
 }
