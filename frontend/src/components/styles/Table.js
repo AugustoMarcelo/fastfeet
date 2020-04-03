@@ -15,6 +15,12 @@ export const Table = styled.table`
     text-align: left;
     color: #666666;
 
+    &:not(:last-of-type) {
+      text-overflow: ellipsis;
+      white-space: normal;
+      overflow: hidden;
+    }
+
     &.deliveryman {
       display: flex;
       align-items: center;
