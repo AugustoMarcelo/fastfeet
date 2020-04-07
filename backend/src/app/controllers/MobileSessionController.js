@@ -10,6 +10,7 @@ class MobileSessionController {
         {
           model: File,
           as: 'avatar',
+          attributes: ['id', 'url', 'path'],
         },
       ],
     });
