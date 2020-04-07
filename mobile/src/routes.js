@@ -106,49 +106,55 @@ function tabBarIcon(color, iconName) {
   return <Icon name={iconName} color={color} size={26} />;
 }
 
-export default function createRouter(isSigned = false) {
-  return !isSigned ? (
-    <NavigationContainer>
-      <Stack.Navigator headerMode="none">
-        <Stack.Screen name="Login" component={Login} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  ) : (
-    <NavigationContainer>
-      <Tabs.Navigator
-        tabBarOptions={{
-          activeTintColor: '#7D40E7',
-          inactiveTintColor: '#999999',
-          labelStyle: {
-            fontSize: 14,
-          },
-          tabStyle: {
-            paddingVertical: 6,
-          },
-          style: {
-            backgroundColor: '#fff',
-            height: 60,
-          },
-          keyboardHidesTabBar: true,
+function tabNavigator() {
+  return (
+    <Tabs.Navigator
+      tabBarOptions={{
+        activeTintColor: '#7D40E7',
+        inactiveTintColor: '#999999',
+        labelStyle: {
+          fontSize: 14,
+        },
+        tabStyle: {
+          paddingVertical: 6,
+        },
+        style: {
+          backgroundColor: '#fff',
+          height: 60,
+        },
+        keyboardHidesTabBar: true,
+      }}
+    >
+      <Tabs.Screen
+        name="Deliveries"
+        component={deliveriesStack}
+        options={{
+          tabBarLabel: 'Entregas',
+          tabBarIcon: ({ color }) => tabBarIcon(color, 'reorder'),
         }}
+      />
+      <Tabs.Screen
+        name="Perfil"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Meu Perfil',
+          tabBarIcon: ({ color }) => tabBarIcon(color, 'account-circle'),
+        }}
+      />
+    </Tabs.Navigator>
+  );
+}
+
+export default function createRouter(isSigned = false) {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        headerMode="none"
+        initialRouteName={isSigned ? 'App' : 'Login'}
       >
-        <Tabs.Screen
-          name="Deliveries"
-          component={deliveriesStack}
-          options={{
-            tabBarLabel: 'Entregas',
-            tabBarIcon: ({ color }) => tabBarIcon(color, 'reorder'),
-          }}
-        />
-        <Tabs.Screen
-          name="Perfil"
-          component={Profile}
-          options={{
-            tabBarLabel: 'Meu Perfil',
-            tabBarIcon: ({ color }) => tabBarIcon(color, 'account-circle'),
-          }}
-        />
-      </Tabs.Navigator>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="App" component={tabNavigator} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
