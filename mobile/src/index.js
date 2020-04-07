@@ -1,14 +1,16 @@
 import 'react-native-gesture-handler';
-// import React from 'react';
 // import { NavigationContainer } from '@react-navigation/native';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import createRouter from './routes';
 
 export default function App() {
-  // const signed = await AsyncStorage.getItem('deliveryman');
+  let signed = false;
+  AsyncStorage.getItem('deliveryman').then((response) => {
+    if (response !== null) {
+      signed = true;
+    }
+  });
 
-  return createRouter(true);
+  return createRouter(signed);
 }
-
-// export default App;
