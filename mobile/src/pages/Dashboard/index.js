@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StatusBar, TouchableOpacity, Text } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import StepIndicator from 'react-native-step-indicator';
 
 import {
   Container,
@@ -21,10 +23,11 @@ import {
   DeliveryInfo,
   Label,
   Value,
+  DetailsButtonText,
 } from './styles';
 
-export default function Deliveries() {
-  const [deliveries, setDeliveries] = useState([
+export default function Dashboard({ navigation }) {
+  const [deliveries] = useState([
     {
       id: 1,
     },
@@ -40,7 +43,7 @@ export default function Deliveries() {
         <Header>
           <Avatar
             source={{
-              uri: 'http://api.adorable.io/avatar/68/Marcelo.png',
+              uri: 'http://api.adorable.io/avatar/256/Marcelo.png',
             }}
           />
           <Welcome>
@@ -79,6 +82,32 @@ export default function Deliveries() {
                 <Icon name="local-shipping" size={24} color="#7D40E7" />
                 <CardTitle>Encomenda 01</CardTitle>
               </CardTop>
+              <StepIndicator
+                labels={['Aguardando retirada', 'Retirada', 'Entregue']}
+                stepCount={3}
+                currentPosition={2}
+                customStyles={{
+                  stepIndicatorSize: 12,
+                  currentStepIndicatorSize: 12,
+                  separatorStrokeWidth: 1,
+                  currentStepStrokeWidth: 1,
+                  stepStrokeCurrentColor: '#7D40E7',
+                  stepStrokeWidth: 1,
+                  separatorStrokeFinishedWidth: 1,
+                  stepStrokeFinishedColor: '#7D40E7',
+                  stepStrokeUnFinishedColor: '#7D40E7',
+                  separatorFinishedColor: '#7D40E7',
+                  separatorUnFinishedColor: '#7D40E7',
+                  stepIndicatorFinishedColor: '#7D40E7',
+                  stepIndicatorUnFinishedColor: '#ffffff',
+                  stepIndicatorCurrentColor: '#ffffff',
+                  stepIndicatorLabelFontSize: 0,
+                  currentStepIndicatorLabelFontSize: 0,
+                  labelColor: '#999',
+                  labelSize: 12,
+                  currentStepLabelColor: '#999',
+                }}
+              />
               <CardBottom>
                 <DeliveryInfo>
                   <Label>Data</Label>
@@ -88,10 +117,10 @@ export default function Deliveries() {
                   <Label>Cidade</Label>
                   <Value>Caicó</Value>
                 </DeliveryInfo>
-                <TouchableOpacity>
-                  <Text style={{ color: '#7D40E7', fontWeight: 'bold' }}>
-                    Ver detalhes
-                  </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Details')}
+                >
+                  <DetailsButtonText>Ver detalhes</DetailsButtonText>
                 </TouchableOpacity>
               </CardBottom>
             </Card>
@@ -101,3 +130,9 @@ export default function Deliveries() {
     </>
   );
 }
+
+Dashboard.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }),
+};

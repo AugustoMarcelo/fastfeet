@@ -13,6 +13,12 @@ export const Header = styled.View`
   margin-bottom: 30px;
 `;
 
+export const Avatar = styled.Image`
+  width: 68px;
+  height: 68px;
+  border-radius: 34px;
+`;
+
 export const Welcome = styled.View`
   margin-right: auto;
   margin-left: 10px;
@@ -26,12 +32,6 @@ export const Name = styled.Text`
   color: #444;
   font-size: 22px;
   font-weight: bold;
-`;
-
-export const Avatar = styled.Image`
-  width: 68px;
-  height: 68px;
-  border-radius: 34px;
 `;
 
 export const Content = styled.View`
@@ -77,6 +77,7 @@ export const CardTop = styled.View`
   flex-direction: row;
   align-items: center;
   padding: 20px;
+  margin-bottom: 10px;
 `;
 
 export const CardTitle = styled.Text`
@@ -92,6 +93,7 @@ export const CardBottom = styled.View`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  margin-top: 10px;
 `;
 
 export const DeliveryInfo = styled.View``;
@@ -104,5 +106,10 @@ export const Label = styled.Text`
 
 export const Value = styled.Text`
   color: #444;
+  font-weight: bold;
+`;
+
+export const DetailsButtonText = styled.Text`
+  color: #7d40e7;
   font-weight: bold;
 `;
