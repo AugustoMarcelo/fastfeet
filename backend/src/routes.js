@@ -3,6 +3,7 @@ import multer from 'multer';
 import multerConfig from './config/multer';
 
 import SessionController from './app/controllers/SessionController';
+import MobileSessionController from './app/controllers/MobileSessionController';
 import RecipientController from './app/controllers/RecipientController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import DeliveryController from './app/controllers/DeliveryController';
@@ -22,6 +23,7 @@ const upload = multer(multerConfig);
 routes.post('/sessions', SessionController.store);
 
 // Rotas para os entregadores: acesso via ID
+routes.get('/deliveryman/:id/sessions', MobileSessionController.show);
 /** Visualização de entregas pendentes e não canceladas */
 routes.get('/deliveryman/:id/pending', PendingDeliveryController.index);
 /** Visualiza de entregas já realizadas */
