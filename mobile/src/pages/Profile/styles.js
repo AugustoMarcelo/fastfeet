@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   background: #fff;
-  padding: 20px;
+  padding: 0 30px;
   align-items: center;
   justify-content: center;
 `;
@@ -16,7 +16,10 @@ export const Avatar = styled.Image`
 
 export const UserInfo = styled.View`
   align-items: flex-start;
-  margin: 25px 0;
+  justify-content: flex-start;
+  margin-top: 40px;
+  margin-bottom: 25px;
+  margin-right: auto;
 `;
 
 export const Label = styled.Text`
@@ -26,7 +29,7 @@ export const Label = styled.Text`
 
 export const Value = styled.Text`
   color: #444;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 15px;
 `;
@@ -44,4 +47,12 @@ export const ButtonLogoutText = styled.Text`
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+`;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  size: 'large',
+  color: '#999',
+})`
+  flex: 1;
+  margin: 30px 0;
 `;
