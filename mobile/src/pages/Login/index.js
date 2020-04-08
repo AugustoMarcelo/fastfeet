@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar, Image, Platform, ToastAndroid } from 'react-native';
+import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../../services/api';
@@ -8,18 +9,23 @@ import logo from '../../assets/logo.png';
 
 import { Container, Input, Button, ButtonText } from './styles';
 
-export default function Login() {
+export default function Login({ navigation }) {
   const [id, setId] = useState(null);
 
   async function handleLogin() {
     if (id) {
       try {
-        const response = await api.get(`/deliverymen/${id}/sessions`);
+        const response = await api.get(`/deliveryman/${id}/sessions`);
 
-        const deliveryman = response.data;
+        const { avatar, ...deliveryman } = response.data;
+        const user = {
+          ...deliveryman,
+          avatar: avatar.url,
+        };
 
         if (deliveryman) {
-          await AsyncStorage.setItem('deliveryman', deliveryman);
+          await AsyncStorage.setItem('deliveryman', JSON.stringify(user));
+          navigation.navigate('App');
         }
       } catch (error) {
         ToastAndroid.show('Entregador não encontrado', ToastAndroid.LONG);
@@ -47,3 +53,9 @@ export default function Login() {
     </>
   );
 }
+
+Login.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }),
+};
