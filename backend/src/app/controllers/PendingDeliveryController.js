@@ -22,9 +22,6 @@ class PendingDeliveryController {
         end_date: null,
         canceled_at: null,
       },
-      attributes: {
-        exclude: ['deliveryman_id'],
-      },
       include: [
         {
           model: Recipient,
