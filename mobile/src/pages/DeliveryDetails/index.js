@@ -1,8 +1,12 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, View, ToastAndroid } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { formatDate } from '../../util/formatDate';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -20,7 +24,30 @@ import {
   ActionText,
 } from './styles';
 
-export default function DeliveryDetails({ navigation }) {
+export default function DeliveryDetails({ navigation, route }) {
+  const { delivery } = route.params;
+  const { recipient, deliveryman_id } = delivery;
+
+  function getStatus() {
+    if (delivery.end_date) return 'Entregue';
+    if (delivery.start_date) return 'Aguardando Recebimento';
+    return 'Pendente';
+  }
+
+  async function handleConfirm() {
+    if (delivery.start_date) {
+      navigation.navigate('ConfirmDelivery');
+    } else {
+      try {
+        await api.put(`deliveries/${delivery.id}/start`, {
+          deliveryman_id,
+        });
+      } catch (error) {
+        ToastAndroid.show(error.response.data.error, ToastAndroid.LONG);
+      }
+    }
+  }
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7D40E7" />
@@ -34,11 +61,14 @@ export default function DeliveryDetails({ navigation }) {
                 <CardTitle>Informações da Entrega</CardTitle>
               </CardTop>
               <Label>Destinatário</Label>
-              <Value>Ludwig Van Beethoven</Value>
+              <Value>{recipient.name}</Value>
               <Label>Endereço de entrega</Label>
-              <Value>Rua Beethoven, 1729, Diadema - SP, 09960-580</Value>
+              <Value>
+                Rua {recipient.street}, {recipient.number}, {recipient.city} -{' '}
+                {recipient.state}, {recipient.zipcode}
+              </Value>
               <Label>Produto</Label>
-              <Value style={{ marginBottom: 0 }}>Yamaha SX7</Value>
+              <Value style={{ marginBottom: 0 }}>{delivery.product}</Value>
             </Card>
             <Card>
               <CardTop>
@@ -46,15 +76,19 @@ export default function DeliveryDetails({ navigation }) {
                 <CardTitle>Situação da Entrega</CardTitle>
               </CardTop>
               <Label>Status</Label>
-              <Value>Pendente</Value>
+              <Value>{getStatus()}</Value>
               <DeliveryDate>
                 <View>
                   <Label>Data de Retirada</Label>
-                  <Value style={{ marginBottom: 0 }}>14/01/2020</Value>
+                  <Value style={{ marginBottom: 0 }}>
+                    {formatDate(delivery.start_date, 'dd/MM/yyyy')}
+                  </Value>
                 </View>
                 <View>
                   <Label>Data de Entrega</Label>
-                  <Value style={{ marginBottom: 0 }}>--/--/</Value>
+                  <Value style={{ marginBottom: 0 }}>
+                    {formatDate(delivery.end_date, 'dd/MM/yyyy')}
+                  </Value>
                 </View>
               </DeliveryDate>
             </Card>
@@ -73,9 +107,13 @@ export default function DeliveryDetails({ navigation }) {
                 <Icon name="info-outline" size={22} color="#E7BA40" />
                 <ActionText>Visualizar Problemas</ActionText>
               </Action>
-              <Action onPress={() => navigation.navigate('ConfirmDelivery')}>
+              <Action onPress={() => handleConfirm()}>
                 <MCIcon name="check-circle-outline" size={22} color="#7D40E7" />
-                <ActionText>Confirmar Entrega</ActionText>
+                <ActionText>
+                  {delivery.start_date
+                    ? 'Confirmar Entrega'
+                    : 'Confirmar Retirada'}
+                </ActionText>
               </Action>
             </Actions>
           </ContentOverlap>
@@ -88,5 +126,27 @@ export default function DeliveryDetails({ navigation }) {
 DeliveryDetails.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+  }),
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      delivery: PropTypes.shape({
+        id: PropTypes.number,
+        deliveryman_id: PropTypes.number,
+        product: PropTypes.string,
+        start_date: PropTypes.string,
+        end_date: PropTypes.string,
+        deliveryman: PropTypes.shape({
+          id: PropTypes.number,
+        }),
+        recipient: PropTypes.shape({
+          name: PropTypes.string,
+          street: PropTypes.string,
+          number: PropTypes.number,
+          city: PropTypes.string,
+          state: PropTypes.string,
+          zipcode: PropTypes.string,
+        }),
+      }),
+    }),
   }),
 };

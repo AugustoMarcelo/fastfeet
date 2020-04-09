@@ -23,7 +23,7 @@ export const ContentOverlap = styled.View`
   background: transparent;
   width: 100%;
   position: absolute;
-  top: -80px;
+  top: -90px;
   left: 20px;
 `;
 
