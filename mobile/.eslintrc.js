@@ -30,6 +30,7 @@ module.exports = {
     "react/require-default-props": "off",
     "no-console": ["error", { allow: ["tron"] }],
     "no-param-reassign": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "camelcase": "off"
   },
 };
