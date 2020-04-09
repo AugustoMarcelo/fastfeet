@@ -9,13 +9,21 @@ import {
 
 import Delivery from '../models/Delivery';
 import DeliveryMan from '../models/DeliveryMan';
+import Recipient from '../models/Recipient';
 
 class StatusDeliveryController {
   async update(request, response) {
     const { id } = request.params;
     const { deliveryman_id } = request.body;
 
-    let delivery = await Delivery.findByPk(id);
+    let delivery = await Delivery.findByPk(id, {
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+        },
+      ],
+    });
 
     if (!delivery) {
       return response.status(400).json({ error: 'Encomenda não encontrada' });
@@ -31,7 +39,7 @@ class StatusDeliveryController {
 
     /* Horários de retirada permitidos: 8h às 18h */
     const initalTime = setSeconds(setMinutes(setHours(date, 7), 59), 59);
-    const finalTime = setSeconds(setMinutes(setHours(date, 18), 0), 0);
+    const finalTime = setSeconds(setMinutes(setHours(date, 22), 0), 0);
 
     if (isBefore(date, initalTime) || isAfter(date, finalTime)) {
       return response.status(401).json({
