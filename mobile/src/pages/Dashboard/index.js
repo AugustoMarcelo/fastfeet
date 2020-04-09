@@ -49,6 +49,7 @@ export default function Dashboard({ navigation }) {
     try {
       const response = await AsyncStorage.getItem('deliveryman');
       setProfile(JSON.parse(response));
+      loadDeliveries();
     } catch (error) {
       navigation.navigate('Login');
     }
@@ -57,7 +58,6 @@ export default function Dashboard({ navigation }) {
 
   useEffect(() => {
     getProfile();
-    loadDeliveries();
   }, []);
 
   async function handleLogout() {
@@ -159,7 +159,9 @@ export default function Dashboard({ navigation }) {
                       <Value>{item.recipient.city}</Value>
                     </DeliveryInfo>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('Details')}
+                      onPress={() =>
+                        navigation.navigate('Details', { delivery: item })
+                      }
                     >
                       <DetailsButtonText>Ver detalhes</DetailsButtonText>
                     </TouchableOpacity>
