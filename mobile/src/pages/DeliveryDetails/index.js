@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View, ToastAndroid } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -25,7 +25,7 @@ import {
 } from './styles';
 
 export default function DeliveryDetails({ navigation, route }) {
-  const { delivery } = route.params;
+  const [delivery, setDelivery] = useState(route.params.delivery);
   const { recipient, deliveryman_id } = delivery;
 
   function getStatus() {
@@ -39,9 +39,10 @@ export default function DeliveryDetails({ navigation, route }) {
       navigation.navigate('ConfirmDelivery');
     } else {
       try {
-        await api.put(`deliveries/${delivery.id}/start`, {
+        const response = await api.put(`deliveries/${delivery.id}/start`, {
           deliveryman_id,
         });
+        setDelivery(response.data);
       } catch (error) {
         ToastAndroid.show(error.response.data.error, ToastAndroid.LONG);
       }
@@ -95,14 +96,16 @@ export default function DeliveryDetails({ navigation, route }) {
             <Actions>
               <Action
                 style={{ borderRightColor: '#e5e5e5', borderRightWidth: 1 }}
-                onPress={() => navigation.navigate('RegisterProblem')}
+                onPress={() =>
+                  navigation.navigate('RegisterProblem', { id: delivery.id })
+                }
               >
                 <Icon name="highlight-off" size={22} color="#E74040" />
                 <ActionText>Informar Problema</ActionText>
               </Action>
               <Action
                 style={{ borderRightColor: '#e5e5e5', borderRightWidth: 1 }}
-                onPress={() => navigation.navigate('Problems')}
+                onPress={() => navigation.navigate('Problems', { delivery })}
               >
                 <Icon name="info-outline" size={22} color="#E7BA40" />
                 <ActionText>Visualizar Problemas</ActionText>
