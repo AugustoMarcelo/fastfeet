@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
+import PropTypes from 'prop-types';
+
+import { formatDate } from '../../util/formatDate';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -13,19 +18,20 @@ import {
   ProblemDate,
 } from './styles';
 
-export default function Problems() {
-  const [problems] = useState([
-    {
-      id: 1,
-      description: 'Destinatário ausente',
-      date: '14/01/2020',
-    },
-    {
-      id: 2,
-      description: 'Destinatário ausente',
-      date: '14/01/2020',
-    },
-  ]);
+export default function Problems({ route }) {
+  const { delivery } = route.params;
+  const [problems, setProblems] = useState([]);
+
+  useEffect(() => {
+    async function loadProblems() {
+      const response = await api.get(`delivery/${delivery.id}/problems`);
+
+      setProblems(response.data.rows);
+    }
+
+    loadProblems();
+  }, []);
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7D40E7" />
@@ -33,14 +39,23 @@ export default function Problems() {
         <HeaderExtented />
         <Content>
           <ContentOverlap>
-            <ProductName>Encomenda 01</ProductName>
+            <ProductName>{delivery.product}</ProductName>
             <ProblemsList
               data={problems}
               keyExtractor={(problem) => String(problem.id)}
+              ListEmptyComponent={
+                <ProblemItem style={{ justifyContent: 'center' }}>
+                  <ProblemDescription>
+                    Nenhum problema informado
+                  </ProblemDescription>
+                </ProblemItem>
+              }
               renderItem={({ item }) => (
                 <ProblemItem>
                   <ProblemDescription>{item.description}</ProblemDescription>
-                  <ProblemDate>{item.date}</ProblemDate>
+                  <ProblemDate>
+                    {formatDate(item.createdAt, 'dd/MM/yyyy')}
+                  </ProblemDate>
                 </ProblemItem>
               )}
             />
@@ -50,3 +65,14 @@ export default function Problems() {
     </>
   );
 }
+
+Problems.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      delivery: PropTypes.shape({
+        id: PropTypes.number,
+        product: PropTypes.string,
+      }),
+    }),
+  }),
+};
