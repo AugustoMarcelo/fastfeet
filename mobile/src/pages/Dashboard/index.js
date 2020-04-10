@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar, TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -37,10 +37,18 @@ export default function Dashboard({ navigation }) {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
+  const [filter, setFilter] = useState({
+    pending: true,
+    delivered: false,
+  });
 
   async function loadDeliveries() {
-    if (!profile.id) return;
-    const response = await api.get(`deliveryman/${profile.id}/pending`);
+    let response;
+    if (filter.pending) {
+      response = await api.get(`deliveryman/${profile.id}/pending`);
+    } else {
+      response = await api.get(`deliveryman/${profile.id}/deliveries`);
+    }
     setDeliveries(response.data.rows);
   }
 
@@ -49,12 +57,17 @@ export default function Dashboard({ navigation }) {
     try {
       const response = await AsyncStorage.getItem('deliveryman');
       setProfile(JSON.parse(response));
-      loadDeliveries();
     } catch (error) {
       navigation.navigate('Login');
     }
     setLoading(false);
   }
+
+  useEffect(() => {
+    if (profile.id) {
+      loadDeliveries();
+    }
+  }, [profile]);
 
   useEffect(() => {
     getProfile();
@@ -70,6 +83,24 @@ export default function Dashboard({ navigation }) {
     if (item.start_date) return 2;
     return 1;
   }
+
+  function handleGetPending() {
+    setFilter({
+      delivered: false,
+      pending: true,
+    });
+  }
+
+  function handleGetDelivered() {
+    setFilter({
+      pending: false,
+      delivered: true,
+    });
+  }
+
+  useEffect(() => {
+    loadDeliveries();
+  }, [filter]);
 
   return (
     <>
@@ -98,25 +129,53 @@ export default function Dashboard({ navigation }) {
             <Content>
               <PageTitle>Entregas</PageTitle>
               <Actions>
-                <TouchableOpacity style={{ marginRight: 10 }}>
+                <TouchableOpacity
+                  style={{ marginRight: 10 }}
+                  onPress={handleGetPending}
+                >
                   <ButtonText
-                    style={{
-                      color: '#7D40E7',
-                      borderBottomWidth: 1,
-                      borderColor: '#7D40E7',
-                    }}
+                    style={
+                      filter.pending && {
+                        color: '#7D40E7',
+                        borderBottomWidth: 1,
+                        borderColor: '#7D40E7',
+                      }
+                    }
                   >
                     Pendentes
                   </ButtonText>
                 </TouchableOpacity>
-                <TouchableOpacity>
-                  <ButtonText>Entregues</ButtonText>
+                <TouchableOpacity onPress={handleGetDelivered}>
+                  <ButtonText
+                    style={
+                      filter.delivered && {
+                        color: '#7D40E7',
+                        borderBottomWidth: 1,
+                        borderColor: '#7D40E7',
+                      }
+                    }
+                  >
+                    Entregues
+                  </ButtonText>
                 </TouchableOpacity>
               </Actions>
             </Content>
             <DeliveryList
               data={deliveries}
               keyExtractor={(delivery) => String(delivery.id)}
+              ListFooterComponent={loading && <Loading />}
+              ListEmptyComponent={
+                <Card
+                  style={{
+                    padding: 10,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#666' }}>
+                    Nenhuma entrega encontrada...
+                  </Text>
+                </Card>
+              }
               renderItem={({ item }) => (
                 <Card>
                   <CardTop>
