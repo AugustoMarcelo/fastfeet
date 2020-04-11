@@ -4,7 +4,7 @@ FastFeet é uma aplicação desenvolvida para uma transportadora fictícia. Ele 
 
 Você pode consultar a <a href="./backend/docs.md" rel="noopener noreferrer">documentação</a> do backend e verificar informações sobre os <i>endpoints</i>.
 
-# :star: Funcionalidades
+## :star: Funcionalidades
 
 - Cadastro de Administradores
 - Cadastro de Entregadores
@@ -16,7 +16,7 @@ Você pode consultar a <a href="./backend/docs.md" rel="noopener noreferrer">doc
 - Cadastro de Problema nas entregas
 - Cancelamento de Entregas
 
-# :gear: Tecnologias
+## :gear: Tecnologias
 
  - ReactJS
  - Node.js
@@ -24,8 +24,11 @@ Você pode consultar a <a href="./backend/docs.md" rel="noopener noreferrer">doc
  - Sequelize
  - Styled-Components
  - Redux/Sagas
+ - React Native
+ - React Native Camera
+ - AsyncStorage
 
-# :computer: Instruções para o backend
+## :computer: Instruções para o backend
 
 Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **Docker**. Feitas as configurações, seguem os passos para executar o backend da aplicação:
 
@@ -53,20 +56,20 @@ Você precisará ter instalado na sua máquina o **Node.js**, o **Yarn** e o **D
 
  - Após isso, execute `yarn dev` para que o backend esteja funcionando.
 
- # :computer: Instruções para o frontend
+## :computer: Instruções para o frontend
 
  - Executar o comando `yarn` para fazer o download de todas as dependências necessárias para executar o projeto;
 
  - Feitos os downloads de todas as dependências, execute `yarn start` para inicilizar o frontend da aplicação;
 
-# :iphone: Instruções para o mobile
+## :iphone: Instruções para o mobile
  > O projeto teve seu desenvolvimento focado em dispositivos ANDROID.
  
  - Executar o comando `yarn` para fazer o download de todas as dependências necessárias para executar o projeto;
 
  - Feitos os downloads de todas as dependências, execute `yarn android`, caso seja a primeira execução, ou `yarn start` para inicilizar o aplicativo;
 
- # :camera: Interfaces da aplicação
+## :camera: Interfaces da aplicação
  > Página de Login
 
  <img src="./screens/login.png" alt="Página de login" />
