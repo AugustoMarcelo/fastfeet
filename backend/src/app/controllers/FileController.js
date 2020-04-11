@@ -9,7 +9,7 @@ class FileController {
       path,
     });
 
-    return response.json(file);
+    return response.status(201).json(file);
   }
 
   async show(request, response) {
