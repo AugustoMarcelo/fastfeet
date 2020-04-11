@@ -36,7 +36,7 @@ export default function DeliveryDetails({ navigation, route }) {
 
   async function handleConfirm() {
     if (delivery.start_date) {
-      navigation.navigate('ConfirmDelivery');
+      navigation.navigate('ConfirmDelivery', { id: delivery.id });
     } else {
       try {
         const response = await api.put(`deliveries/${delivery.id}/start`, {
