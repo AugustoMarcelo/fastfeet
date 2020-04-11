@@ -21,7 +21,7 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
-
+routes.post('/files', upload.single('file'), FileController.store);
 // Rotas para os entregadores: acesso via ID
 routes.get('/deliveryman/:id/sessions', MobileSessionController.show);
 /** Visualização de entregas pendentes e não canceladas */
@@ -60,8 +60,6 @@ routes.delete('/deliveries/:id', DeliveryController.destroy);
 
 /** Rota para a distribuidora cancelar uma entrega */
 routes.put('/problem/:id/cancel-delivery', CancelDeliveryController.update);
-
-routes.post('/files', upload.single('file'), FileController.store);
 routes.get('/files/:id', FileController.show);
 
 export default routes;
