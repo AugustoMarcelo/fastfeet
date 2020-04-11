@@ -1,35 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar, Image, Platform, ToastAndroid } from 'react-native';
 import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-community/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
-import api from '../../services/api';
+import { signInRequest } from '../../store/modules/auth/actions';
 
 import logo from '../../assets/logo.png';
 
 import { Container, Input, Button, ButtonText } from './styles';
 
 export default function Login({ navigation }) {
-  const [id, setId] = useState(null);
+  const [id, setId] = useState();
+  const signed = useSelector((state) => state.auth.signed);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (signed) {
+      navigation.navigate('App');
+    }
+  }, [signed]);
 
   async function handleLogin() {
     if (id) {
-      try {
-        const response = await api.get(`/deliveryman/${id}/sessions`);
-
-        const { avatar, ...deliveryman } = response.data;
-        const user = {
-          ...deliveryman,
-          avatar: avatar.url,
-        };
-
-        if (deliveryman) {
-          await AsyncStorage.setItem('deliveryman', JSON.stringify(user));
-          navigation.navigate('App');
-        }
-      } catch (error) {
-        ToastAndroid.show('Entregador não encontrado', ToastAndroid.LONG);
-      }
+      dispatch(signInRequest(id));
     } else {
       ToastAndroid.show('Você precisa informar o ID', ToastAndroid.LONG);
     }

@@ -1,8 +1,10 @@
-import React from 'react';
-import { StatusBar, View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar, View, Text, ToastAndroid } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { RNCamera } from 'react-native-camera';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -15,7 +17,10 @@ import {
   ButtonSendText,
 } from './styles';
 
-export default function ConfirmDelivery({ navigation }) {
+export default function ConfirmDelivery({ navigation, route }) {
+  const { id } = route.params;
+  const [photo, setPhoto] = useState({});
+
   const PendingView = () => (
     <View
       style={{
@@ -32,7 +37,43 @@ export default function ConfirmDelivery({ navigation }) {
   async function takePicture(camera) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
-    alert(data.uri); //eslint-disable-line
+    setPhoto({
+      uri: data.uri,
+      type: 'image/jpeg',
+      originalname: `user_signature_delivery_id_${id}.jpg`,
+    });
+  }
+
+  async function handleSubmitSignature() {
+    const data = new FormData(); // eslint-disable-line
+    data.append('file', {
+      uri: photo.uri,
+      type: photo.type,
+      originalname: photo.originalname,
+    });
+
+    const response = await api.post('files', data, {
+      headers: {
+        accept: 'application/json',
+        'content-type': 'multipart/form-data',
+      },
+    });
+
+    const { id: signature_id } = response.data;
+
+    if (response.status === 201) {
+      const result = await api.put(`deliveries/${id}/end`, { signature_id });
+
+      if (result.status === 200) {
+        ToastAndroid.show('Encomenda entregue com sucesso', ToastAndroid.LONG);
+        navigation.navigate('Dashboard');
+      }
+    } else {
+      ToastAndroid.show(
+        'Não foi possível confirmar a entrega. Tente novamente.',
+        ToastAndroid.LONG
+      );
+    }
   }
 
   return (
@@ -74,7 +115,7 @@ export default function ConfirmDelivery({ navigation }) {
                 }}
               </RNCamera>
             </Card>
-            <ButtonSend onPress={() => navigation.goBack()}>
+            <ButtonSend onPress={handleSubmitSignature}>
               <ButtonSendText>Enviar</ButtonSendText>
             </ButtonSend>
           </ContentOverlap>
@@ -88,5 +129,10 @@ ConfirmDelivery.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+  }),
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number,
+    }),
   }),
 };
