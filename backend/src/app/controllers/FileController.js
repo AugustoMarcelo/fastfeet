@@ -2,14 +2,18 @@ import File from '../models/File';
 
 class FileController {
   async store(request, response) {
-    const { originalname: name, filename: path } = request.file;
+    try {
+      const { originalname: name, filename: path } = request.file;
 
-    const file = await File.create({
-      name,
-      path,
-    });
+      const file = await File.create({
+        name,
+        path,
+      });
 
-    return response.status(201).json(file);
+      return response.status(201).json(file);
+    } catch (error) {
+      return response.status(400).json({ error: 'Erro interno' });
+    }
   }
 
   async show(request, response) {
