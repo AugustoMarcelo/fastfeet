@@ -1,16 +1,17 @@
+import React from 'react';
 import 'react-native-gesture-handler';
-// import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { Provider } from 'react-redux';
 
-import createRouter from './routes';
+import './config/ReactotronConfig';
 
-export default function App() {
-  let signed = false;
-  AsyncStorage.getItem('deliveryman').then((response) => {
-    if (response !== null) {
-      signed = true;
-    }
-  });
+import App from './App';
 
-  return createRouter(signed);
+import { store } from './store';
+
+export default function Index() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 }
