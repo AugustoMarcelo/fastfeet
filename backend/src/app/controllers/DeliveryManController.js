@@ -98,7 +98,7 @@ class DeliveryManController {
 
     const { avatar_id } = request.body;
 
-    if (avatar_id !== deliveryMan.avatar_id) {
+    if (Number(avatar_id) !== Number(deliveryMan.avatar_id)) {
       const avatar = await File.findByPk(avatar_id);
 
       avatar.destroy();
