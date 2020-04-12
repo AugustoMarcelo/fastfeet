@@ -39,33 +39,79 @@ export default function Dashboard({ navigation }) {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.auth.deliveryman);
   const [loading, setLoading] = useState(false);
+  const [footerLoading, setFooterLoading] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
   const [filter, setFilter] = useState({
     pending: true,
     delivered: false,
   });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+  });
+  const [total, setTotal] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   async function loadDeliveries() {
-    if (!profile) return;
     setLoading(true);
-    let response;
+    let route;
     if (filter.pending) {
-      response = await api.get(`deliveryman/${profile.id}/pending`);
+      route = 'pending';
     } else {
-      response = await api.get(`deliveryman/${profile.id}/deliveries`);
+      route = 'deliveries';
     }
+    const response = await api.get(`deliveryman/${profile.id}/${route}`, {
+      params: {
+        ...pagination,
+      },
+    });
     setDeliveries(response.data.rows);
+    setTotal(response.data.count);
     setLoading(false);
   }
 
-  useEffect(() => {
-    if (profile && profile.id) {
-      loadDeliveries();
+  function refreshList() {
+    setRefreshing(true);
+    setPagination({
+      ...pagination,
+      page: 1,
+    });
+    loadDeliveries();
+    setRefreshing(false);
+  }
+
+  async function loadMore() {
+    if (total && deliveries.length === total) return;
+
+    setFooterLoading(true);
+
+    let route;
+
+    if (filter.pending) {
+      route = 'pending';
+    } else {
+      route = 'deliveries';
     }
-  }, [profile]);
+
+    const response = await api.get(`deliveryman/${profile.id}/${route}`, {
+      params: {
+        ...pagination,
+        page: pagination.page + 1,
+      },
+    });
+
+    setPagination({
+      ...pagination,
+      page: pagination.page + 1,
+    });
+
+    setDeliveries([...deliveries, ...response.data.rows]);
+
+    setFooterLoading(false);
+  }
 
   async function handleLogout() {
-    await dispatch(signOut());
+    dispatch(signOut());
     navigation.navigate('Login');
   }
 
@@ -151,6 +197,11 @@ export default function Dashboard({ navigation }) {
           <DeliveryList
             data={deliveries}
             keyExtractor={(delivery) => String(delivery.id)}
+            onRefresh={refreshList}
+            refreshing={refreshing}
+            onEndReachedThreshold={0.2}
+            onEndReached={loadMore}
+            ListFooterComponent={footerLoading && <Loading />}
             ListEmptyComponent={
               loading ? (
                 <Loading />
