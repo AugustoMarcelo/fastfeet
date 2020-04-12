@@ -55,6 +55,7 @@ export const ProblemItem = styled.View`
 export const ProblemDescription = styled.Text`
   color: #999;
   font-size: 16px;
+  flex-shrink: 1;
 `;
 
 export const ProblemDate = styled.Text`

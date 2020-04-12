@@ -48,7 +48,7 @@ export const ButtonCapture = styled.TouchableOpacity`
 `;
 
 export const ButtonSend = styled.TouchableOpacity`
-  background: #7d40e7;
+  background: ${(props) => (props.disabled ? '#cecece' : '#7d40e7')};
   height: 45px;
   align-self: stretch;
   align-items: center;

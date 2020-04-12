@@ -46,6 +46,7 @@ export default function RegisterProblem({ navigation, route }) {
               <Input
                 placeholder="Inclua aqui o problema que ocorreu na entrega."
                 numberOfLines={15}
+                multiline
                 textAlignVertical="top"
                 value={description}
                 onChangeText={setDescription}
