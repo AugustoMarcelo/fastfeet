@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, Image, Platform, ToastAndroid } from 'react-native';
+import { StatusBar, Image, Platform, ToastAndroid, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import { Container, Input, Button, ButtonText } from './styles';
 
 export default function Login({ navigation }) {
   const [id, setId] = useState();
+  const [loading, setLoading] = useState(false);
   const signed = useSelector((state) => state.auth.signed);
 
   const dispatch = useDispatch();
@@ -22,11 +23,13 @@ export default function Login({ navigation }) {
   }, [signed]);
 
   async function handleLogin() {
+    setLoading(true);
     if (id) {
       dispatch(signInRequest(id));
     } else {
       ToastAndroid.show('Você precisa informar o ID', ToastAndroid.LONG);
     }
+    setLoading(false);
   }
 
   return (
@@ -40,8 +43,8 @@ export default function Login({ navigation }) {
           value={id}
           onChangeText={setId}
         />
-        <Button onPress={handleLogin}>
-          <ButtonText>Entrar no sistema</ButtonText>
+        <Button onPress={handleLogin} disabled={(loading || !id) && 1}>
+          <ButtonText>{loading ? <ActivityIndicator color="#666" /> : 'Entrar no sistema'}</ButtonText>
         </Button>
       </Container>
     </>

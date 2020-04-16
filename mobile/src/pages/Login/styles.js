@@ -20,7 +20,7 @@ export const Input = styled.TextInput`
 
 export const Button = styled.TouchableOpacity`
   height: 45px;
-  background: #82bf18;
+  background: ${(props) => (props.disabled ? '#cecece' : '#82bf18')};
   align-self: stretch;
   border-radius: 4px;
   margin-top: 10px;
