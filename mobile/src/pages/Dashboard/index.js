@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import StepIndicator from 'react-native-step-indicator';
 import { useSelector, useDispatch } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 
 import { formatDate } from '../../util/formatDate';
 
@@ -51,6 +52,7 @@ export default function Dashboard({ navigation }) {
   });
   const [total, setTotal] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
 
   async function loadDeliveries() {
     setLoading(true);
@@ -134,6 +136,10 @@ export default function Dashboard({ navigation }) {
       delivered: true,
     });
   }
+
+  useEffect(() => {
+    loadDeliveries();
+  }, [isFocused]);
 
   useEffect(() => {
     loadDeliveries();
