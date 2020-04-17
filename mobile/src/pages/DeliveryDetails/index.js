@@ -110,9 +110,16 @@ export default function DeliveryDetails({ navigation, route }) {
                 <Icon name="info-outline" size={22} color="#E7BA40" />
                 <ActionText>Visualizar Problemas</ActionText>
               </Action>
-              <Action onPress={() => handleConfirm()}>
-                <MCIcon name="check-circle-outline" size={22} color="#7D40E7" />
-                <ActionText>
+              <Action
+                disabled={delivery.end_date && 1}
+                onPress={() => handleConfirm()}
+              >
+                <MCIcon
+                  name="check-circle-outline"
+                  size={22}
+                  color={delivery.end_date ? '#cecece' : '#7D40E7'}
+                />
+                <ActionText style={delivery.end_date && { color: '#cecece' }}>
                   {delivery.start_date
                     ? 'Confirmar Entrega'
                     : 'Confirmar Retirada'}
