@@ -14,6 +14,8 @@ class EndDeliveryController {
       return response.status(400).json({ error: 'Dados inválidos' });
     }
 
+    const { signature_id } = request.body;
+
     let delivery = await Delivery.findByPk(id);
 
     if (!delivery) {
@@ -27,6 +29,7 @@ class EndDeliveryController {
     }
 
     delivery = await delivery.update({
+      signature_id,
       end_date: new Date(),
     });
 
