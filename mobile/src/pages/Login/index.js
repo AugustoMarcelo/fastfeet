@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, Image, Platform, ToastAndroid, ActivityIndicator } from 'react-native';
+import {
+  StatusBar,
+  Image,
+  Platform,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,7 +50,11 @@ export default function Login({ navigation }) {
           onChangeText={setId}
         />
         <Button onPress={handleLogin} disabled={(loading || !id) && 1}>
-          <ButtonText>{loading ? <ActivityIndicator color="#666" /> : 'Entrar no sistema'}</ButtonText>
+          {loading ? (
+            <ActivityIndicator color="#666" size="small" />
+          ) : (
+            <ButtonText>Entrar no sistema</ButtonText>
+          )}
         </Button>
       </Container>
     </>
