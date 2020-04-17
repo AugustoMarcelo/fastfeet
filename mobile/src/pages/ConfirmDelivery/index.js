@@ -67,7 +67,7 @@ export default function ConfirmDelivery({ navigation, route }) {
     data.append('file', {
       uri: photo.uri,
       type: photo.type,
-      originalname: photo.originalname,
+      name: photo.originalname,
     });
 
     try {
