@@ -107,7 +107,24 @@ export default function ConfirmDelivery({ navigation, route }) {
           <ContentOverlap>
             <Card>
               {photo.uri ? (
-                <Image source={{ uri: photo.uri }} style={{ flex: 1 }} />
+                <View
+                  style={{
+                    position: 'relative',
+                    flex: 1,
+                  }}
+                >
+                  <Image source={{ uri: photo.uri }} style={{ flex: 1 }} />
+                  <ButtonCapture
+                    onPress={() => setPhoto({})}
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      alignSelf: 'center',
+                    }}
+                  >
+                    <Icon name="clear" size={24} color="#fff" />
+                  </ButtonCapture>
+                </View>
               ) : (
                 <RNCamera
                   style={{
