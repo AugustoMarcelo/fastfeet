@@ -3,7 +3,7 @@
 </h1>
 
 <h2 align="center">
-  🎬 <a href="https://youtu.be/aryYQi7lNmM">Assistir vídeo</a>
+  🎬 <a href="https://youtu.be/aryYQi7lNmM" target="_blank">Assistir vídeo</a>
 </h2>
 
 ---
