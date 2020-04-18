@@ -11,6 +11,8 @@
  - [Instruções para o mobile](#-instruções-para-o-mobile)
  - [Interfaces da aplicação](#-interfaces-da-aplicação)
 
+---
+
 ## 💥 FastFeet
 
 FastFeet é uma aplicação desenvolvida para uma transportadora fictícia. Ele permite gerenciar entregadores, destinatários, encomendas, relatar problemas nas entregas dentre outras funcionalidades. Além disso, realiza envio de e-mails para encomendas prontas para serem retiradas ou canceladas.
