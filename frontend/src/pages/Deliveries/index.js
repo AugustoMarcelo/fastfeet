@@ -12,11 +12,15 @@ import Pagination from '~/components/Pagination';
 import Modal from '~/components/Modal';
 import { ConfirmContent } from '~/components/Modal/styles';
 import { EmptyContent } from '~/components/styles/Table';
-import { Table, Delivery } from './styles';
+import { Table, Delivery, Actions, FilterActions } from './styles';
 
 export default function Deliveries() {
   const [deliveries, setDeliveries] = useState([]);
   const [query, setQuery] = useState('');
+  const [filterActive, setFilterActive] = useState({
+    all: 'active',
+    problems: '',
+  });
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 5,
@@ -105,6 +109,29 @@ export default function Deliveries() {
       toast.error('Não possível remover a encomenda. Tente novamente');
     }
     confirmModalRef.current.hide();
+  }
+
+  function handleFilterAll() {
+    setFilterActive({
+      all: 'active',
+      problems: '',
+    });
+    loadDeliveries();
+  }
+
+  async function handleFilterOnlyWithProblems() {
+    setFilterActive({
+      all: '',
+      problems: 'active',
+    });
+
+    const response = await api.get('deliveries/problems');
+    setDeliveries(
+      response.data.rows.map(data => ({
+        ...data.delivery,
+        status: getStatus(data.delivery),
+      }))
+    );
   }
 
   const confirmContent = delivery => {
@@ -228,14 +255,31 @@ export default function Deliveries() {
       ) : (
         <EmptyContent>Nenhuma encomenda encontrada</EmptyContent>
       )}
-      <Pagination
-        handleNextPage={handleNextPage}
-        handlePreviousPage={handlePreviousPage}
-        prevDisabled={pagination.page === 1}
-        nextDisabled={
-          deliveries.length === 0 || deliveries.length < pagination.limit
-        }
-      />
+      <Actions>
+        <FilterActions>
+          <li className={`${filterActive.all}`}>
+            <button type="button" onClick={() => handleFilterAll()}>
+              Todos
+            </button>
+          </li>
+          <li className={`${filterActive.problems}`}>
+            <button
+              type="button"
+              onClick={() => handleFilterOnlyWithProblems()}
+            >
+              Com problemas
+            </button>
+          </li>
+        </FilterActions>
+        <Pagination
+          handleNextPage={handleNextPage}
+          handlePreviousPage={handlePreviousPage}
+          prevDisabled={pagination.page === 1}
+          nextDisabled={
+            deliveries.length === 0 || deliveries.length < pagination.limit
+          }
+        />
+      </Actions>
       <Modal ref={modalRef} modalTitle="Informações da Encomenda" />
       <Modal ref={confirmModalRef} modalTitle="Remover registro" atTop />
     </>
