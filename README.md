@@ -2,7 +2,9 @@
   <img src="https://github.com/Rocketseat/bootcamp-gostack-desafio-10/blob/master/.github/logo.png?raw=true">
 </h1>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/aryYQi7lNmM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<h2 align="center">
+  🎬 <a href="https://youtu.be/aryYQi7lNmM">Assistir vídeo</a>
+</h2>
 
 ---
 
