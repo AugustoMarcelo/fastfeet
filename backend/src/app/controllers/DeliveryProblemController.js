@@ -2,7 +2,10 @@ import { Op } from 'sequelize';
 import * as Yup from 'yup';
 
 import DeliveryProblem from '../models/DeliveryProblem';
+import DeliveryMan from '../models/DeliveryMan';
+import Recipient from '../models/Recipient';
 import Delivery from '../models/Delivery';
+import File from '../models/File';
 
 class DeliveryProblemController {
   async index(request, response) {
@@ -28,6 +31,26 @@ class DeliveryProblemController {
           model: Delivery,
           as: 'delivery',
           where,
+          include: [
+            {
+              model: DeliveryMan,
+              as: 'deliveryman',
+              include: [
+                {
+                  model: File,
+                  as: 'avatar',
+                },
+              ],
+            },
+            {
+              model: Recipient,
+              as: 'recipient',
+            },
+            {
+              model: File,
+              as: 'signature',
+            },
+          ],
         },
       ],
     });
