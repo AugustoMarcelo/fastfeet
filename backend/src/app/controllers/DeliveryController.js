@@ -21,7 +21,7 @@ class DeliveryController {
     if (q) {
       where = {
         product: {
-          [Op.like]: `%${q}%`,
+          [Op.iLike]: `%${q}%`,
         },
       };
     }
