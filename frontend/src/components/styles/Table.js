@@ -63,6 +63,7 @@ export const Table = styled.table`
         height: 8px;
         border-radius: 50%;
         margin-right: 5px;
+        margin-bottom: 1px;
         background: #2ca42b;
       }
 
