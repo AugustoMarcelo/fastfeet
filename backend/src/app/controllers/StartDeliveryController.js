@@ -39,7 +39,7 @@ class StatusDeliveryController {
 
     /* Horários de retirada permitidos: 8h às 18h */
     const initalTime = setSeconds(setMinutes(setHours(date, 7), 59), 59);
-    const finalTime = setSeconds(setMinutes(setHours(date, 22), 0), 0);
+    const finalTime = setSeconds(setMinutes(setHours(date, 18), 0), 0);
 
     if (isBefore(date, initalTime) || isAfter(date, finalTime)) {
       return response.status(401).json({
